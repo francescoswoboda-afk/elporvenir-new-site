@@ -80,12 +80,16 @@
   }
 
   /* ---------- scroll engine ---------- */
+  // Native scrolling: smooth-scroll libraries add input lag and make fixed layers jitter.
   var lenis = null;
-  if (animated && window.Lenis) {
-    lenis = new Lenis({ lerp: .16, wheelMultiplier: 1.35, touchMultiplier: 1.5, smoothWheel: true });
-    lenis.on("scroll", ScrollTrigger.update);
-    root.classList.add("lenis");
-  }
+  function lockScroll(on) { root.style.overflow = on ? "hidden" : ""; }
+  var lastY = window.pageYOffset, scrollVel = 0;
+  // From the hero to "values" the tree rides up with the page. Where the browser supports
+  // scroll-driven animations, it moves the canvas itself so the tree never lags the text.
+  var cssLift = !!(window.CSS && CSS.supports && CSS.supports("animation-timeline: scroll()"));
+  if (cssLift) root.classList.add("lift");
+  function liftNow(y) { return SEC.values && y < SEC.values.top ? Math.max(0, y) : 0; }
+  function canvasY(cy) { return cssLift ? cy + liftNow(scrollY()) : cy; }
   function scrollY() { return lenis ? lenis.scroll : window.pageYOffset; }
   function jump(y) { if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y); }
   function goTo(id) {
@@ -105,24 +109,29 @@
   var SEC = {}, VH = 0, VW = 0, MAXY = 1, keysPose = [], keysS = [];
   // season at the start and end of each section; tree pose [x, base, H, alpha] for desktop and mobile
   var SEASON = { home: [2, 2], about: [2.05, 2.35], values: [2.38, 2.55], land: [2.58, 2.9], nature: [2.95, 3.98], year: [4, 7.66], harvest: [7.7, 7.92], gallery: [7.96, 8], numbers: [8, 8], contact: [8, 8], rest: [8, 8] };
-  var POSE_D = { home: [.5, .9, .94, 1], about: [.5, .9, .94, 0], values: [.88, .97, .62, 0], land: [.8, .96, .7, 0], nature: [.8, .96, .7, 0], year: [.35, .93, .92, 1], harvest: [.95, .97, .45, 0], gallery: [.9, .97, .5, 0], numbers: [.84, .95, .74, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
-  var POSE_M = { home: [.5, .755, .74, 1], about: [.5, .755, .74, 0], values: [.5, .95, .8, 0], land: [.5, .95, .7, 0], nature: [.5, .95, .7, 0], year: [.5, .56, .52, 1], harvest: [.8, .97, .5, 0], gallery: [.5, .97, .5, 0], numbers: [.55, .95, .8, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
+  var POSE_D = { home: [.5, .9, .94, 1], about: [.5, .9, .94, 0], values: [.88, .97, .62, 0], land: [.8, .96, .7, 0], nature: [.35, .93, .92, 0], year: [.35, .93, .92, 1], harvest: [.95, .97, .45, 0], gallery: [.9, .97, .5, 0], numbers: [.84, .95, .74, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
+  var POSE_M = { home: [.5, .755, .74, 1], about: [.5, .755, .74, 0], values: [.5, .95, .8, 0], land: [.5, .95, .7, 0], nature: [.5, .56, .52, 0], year: [.5, .56, .52, 1], harvest: [.8, .97, .5, 0], gallery: [.5, .97, .5, 0], numbers: [.55, .95, .8, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
 
   function measure() {
     VH = window.innerHeight; VW = window.innerWidth;
     IDS.forEach(function (id) { var el = doc.getElementById(id); SEC[id] = { el: el, top: sectionTop(el), h: el.offsetHeight }; });
     MAXY = Math.max(1, doc.documentElement.scrollHeight - VH);
+    root.style.setProperty("--lift", Math.max(1, SEC.values.top) + "px");
     var POSE = isMobile() ? POSE_M : POSE_D;
     keysPose = []; keysS = [];
     IDS.forEach(function (id, i) {
       var s = SEC[id], a = s.top - VH * .35, b = Math.max(a + 1, s.top + s.h - VH * .65);
       if (i === 0) { a = -1e5; b = Math.max(1, s.h * .35); }
+      // the tree's return for winter: a slow fade (about a screen's worth of scrolling)
+      if (id === "nature") b = Math.max(a + 1, SEC.year.top - VH * .85);
+      if (id === "year") a = s.top + VH * .25;
       keysPose.push([a, POSE[id]], [b, POSE[id]]);
       var sa = s.top, sb = Math.max(sa + 1, s.top + s.h - VH);
       if (i === 0) sa = -1e5;
       keysS.push([sa, SEASON[id][0]], [sb, SEASON[id][1]]);
     });
     if (map) map.layout();
+    lastLandP = -1; // force a map redraw at the new size
     trackW = track ? track.scrollWidth : 0;
   }
   function interp(keys, y, out) {
@@ -159,7 +168,7 @@
   var PAPER = [hex("#e9ebe4"), hex("#f1efdf"), hex("#f4ecd8"), hex("#f2e3c8")];
   var ACCENT = [hex("#4a6273"), hex("#5a7a28"), hex("#43612a"), hex("#8c521c")];
   function cyc(arr, s) { var m = ((s % 4) + 4) % 4, i = Math.floor(m), f = m - i, e = f * f * (3 - 2 * f); return mixc(arr[i], arr[(i + 1) % 4], smooth(.55, 1, f) * 1 + 0 * e); }
-  var lastPaper = "", lastAccent = "";
+  var lastPaper = "", lastAccent = "", landP = 0, lastLandP = -1;
 
   /* ---------- sky: one day passes while you scroll ---------- */
   var sky = $(".sky");
@@ -179,7 +188,7 @@
     // pose & season
     interp(keysPose, y, pose);
     var unit = isMobile() ? Math.min(VH * .62, VW * 1.15) : Math.min(VH * .78, VW * .62);
-    st.x = pose[0] * VW; st.base = pose[1] * VH - (y < SEC.values.top ? Math.max(0, y) : 0); st.H = pose[2] * unit; st.alpha = pose[3]; st.sx = isMobile() ? .8 : 1;
+    st.x = pose[0] * VW; st.base = pose[1] * VH - (cssLift ? 0 : liftNow(y)); st.H = pose[2] * unit; st.alpha = pose[3]; st.sx = isMobile() ? .8 : 1;
     var yr = SEC.year;
     st.s = interp(keysS, y);
     // the orchard at rest + dusk
@@ -189,7 +198,8 @@
     st.dusk = dusk;
     body.classList.toggle("dusk", dusk > .5);
     // wind from scroll speed
-    var v = lenis ? Math.abs(lenis.velocity || 0) : 0;
+    scrollVel = lerp(scrollVel, Math.abs(y - lastY), .3); lastY = y;
+    var v = scrollVel;
     st.wind = lerp(st.wind, 1 + Math.min(1.6, v * .05), .08);
     // colours
     var paper = css(cyc(PAPER, st.s)), accent = css(cyc(ACCENT, st.s));
@@ -199,14 +209,27 @@
     var skyCss = "linear-gradient(180deg, rgba(20,26,40," + (dusk * .93).toFixed(3) + "), rgba(44,36,46," + (dusk * .9).toFixed(3) + ") 70%, rgba(58,42,36," + (dusk * .88).toFixed(3) + ")), linear-gradient(180deg, rgba(" + dt2[0].join(",") + "," + dt2[1].toFixed(3) + "), rgba(" + dt2[0].join(",") + ",0) 65%)";
     if (skyCss !== lastSky) { sky.style.background = skyCss; lastSky = skyCss; }
     // land: map zoom then the real photo
-    var ld = SEC.land, pL = clamp((y - ld.top) / Math.max(1, ld.h - VH), 0, 1);
-    var mp = pL < .1 ? 0 : pL < .33 ? smooth(.1, .33, pL) : pL < .38 ? 1 : pL < .58 ? 1 + smooth(.38, .58, pL) : pL < .63 ? 2 : 2 + smooth(.63, .84, pL);
-    if (reduced) mp = Math.round(mp);
-    map.set(mp);
-    var ph = smooth(.8, .9, pL);
-    landPhoto.style.opacity = ph; landPhoto.style.visibility = ph > 0 ? "visible" : "hidden";
-    mapSvg.style.opacity = 1 - ph;
-    if (animated) landPhoto.style.transform = "scale(" + (1.12 - .12 * smooth(.8, 1, pL)) + ")";
+    // Only touch the map while its section is on screen, and only when something changed.
+    // The zoom eases toward the scroll position so wheel steps glide instead of jumping.
+    var ld = SEC.land, pLt = clamp((y - ld.top) / Math.max(1, ld.h - VH), 0, 1);
+    var nearLand = y > ld.top - VH && y < ld.top + ld.h;
+    if (!nearLand || reduced || !animated) landP = pLt;
+    else { landP = lerp(landP, pLt, 1 - Math.pow(.004, dt)); if (Math.abs(landP - pLt) < .0002) landP = pLt; }
+    if (nearLand && !reduced && landP === lastLandP) map.pulse();
+    if (landP !== lastLandP) {
+      lastLandP = landP;
+      var pL = landP;
+      var mp = pL < .1 ? 0 : pL < .33 ? smooth(.1, .33, pL) : pL < .38 ? 1 : pL < .58 ? 1 + smooth(.38, .58, pL) : pL < .63 ? 2 : 2 + smooth(.63, .84, pL);
+      if (reduced) mp = Math.round(mp);
+      map.set(mp);
+      var ph = smooth(.8, .9, pL);
+      landPhoto.style.opacity = ph; landPhoto.style.visibility = ph > 0 ? "visible" : "hidden";
+      // Never fade the map itself: at farm zoom it is ~10,000x magnified, and an opacity
+      // group that large makes Chrome drop the whole stage for a frame (hard white flashes).
+      // The photo fades in on top instead, and the map is hidden once fully covered.
+      mapSvg.style.visibility = ph >= 1 ? "hidden" : "visible";
+      if (animated) landPhoto.style.transform = "scale(" + (1.12 - .12 * smooth(.8, 1, pL)).toFixed(4) + ")";
+    }
     // year
     var pY = clamp((y - yr.top) / Math.max(1, yr.h - VH), 0, 1);
     if (animated) {
@@ -268,13 +291,13 @@
   function openDrawer() {
     drawer.hidden = false; scrim.hidden = false; tab.setAttribute("aria-expanded", "true");
     requestAnimationFrame(function () { drawer.classList.add("open"); scrim.classList.add("open"); });
-    if (lenis) lenis.stop();
+    lockScroll(true);
     setTimeout(function () { var a = drawer.querySelector("a.on") || drawer.querySelector("a"); a && a.focus({ preventScroll: true }); }, 300);
   }
   function closeDrawer() {
     if (!drawer.classList.contains("open")) return;
     drawer.classList.remove("open"); scrim.classList.remove("open"); tab.setAttribute("aria-expanded", "false");
-    if (lenis) lenis.start();
+    lockScroll(false);
     setTimeout(function () { drawer.hidden = true; scrim.hidden = true; }, 600);
   }
   tab.addEventListener("click", function () { drawer.classList.contains("open") ? closeDrawer() : openDrawer(); });
@@ -317,19 +340,20 @@
   window.addEventListener("pointermove", function (e) {
     var sp = Math.sqrt((e.clientX - lpx) * (e.clientX - lpx) + (e.clientY - lpy) * (e.clientY - lpy));
     lpx = e.clientX; lpy = e.clientY; px = e.clientX; py = e.clientY;
-    tree.pointer(px, py, Math.min(sp, 80) * (e.pointerType === "touch" ? 2.4 : 1));
+    tree.pointer(px, canvasY(py), Math.min(sp, 80) * (e.pointerType === "touch" ? 2.4 : 1));
   }, { passive: true });
-  window.addEventListener("touchmove", function (e) { var t0 = e.touches[0]; tree.pointer(t0.clientX, t0.clientY, 30); }, { passive: true });
+  window.addEventListener("touchmove", function (e) { var t0 = e.touches[0]; tree.pointer(t0.clientX, canvasY(t0.clientY), 30); }, { passive: true });
   var trunkHits = [];
   window.addEventListener("pointerdown", function (e) {
     if (e.target.closest("a,button,input,textarea,label,form,.dock,.drawer,.tab,.viewer,.legal-dlg,.wall")) return;
-    if (tree.catchAt(e.clientX, e.clientY)) {
+    var cy = canvasY(e.clientY);
+    if (tree.catchAt(e.clientX, cy)) {
       sound.crack();
       toast(tr(tree.caught === 1 ? "ui.caught" : "ui.caughtN").replace("{n}", num(tree.caught)));
       if (navigator.vibrate) try { navigator.vibrate(12); } catch (er) {}
       return;
     }
-    if (tree.trunkAt(e.clientX, e.clientY)) {
+    if (tree.trunkAt(e.clientX, cy)) {
       var now = performance.now(); trunkHits.push(now); trunkHits = trunkHits.filter(function (h) { return now - h < 1400; });
       if (trunkHits.length >= 3) { trunkHits = []; tree.callBird(); sound.chirpHello(); toast(tr("ui.hummingbird")); }
     }
@@ -391,8 +415,8 @@
     vCount.textContent = (vIdx + 1) + " / " + PHOTOS.length;
     if (hasGsap && !reduced) gsap.fromTo(vImg, { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: .7, ease: "expo.out" });
   }
-  function openViewer(i) { vReturn = doc.activeElement; viewer.hidden = false; showPhoto(i); if (lenis) lenis.stop(); $(".v-close").focus(); }
-  function closeViewer() { if (viewer.hidden) return; viewer.hidden = true; if (lenis) lenis.start(); if (vReturn) vReturn.focus({ preventScroll: true }); }
+  function openViewer(i) { vReturn = doc.activeElement; viewer.hidden = false; showPhoto(i); lockScroll(true); $(".v-close").focus(); }
+  function closeViewer() { if (viewer.hidden) return; viewer.hidden = true; lockScroll(false); if (vReturn) vReturn.focus({ preventScroll: true }); }
   $$(".frame-btn").forEach(function (b) { b.addEventListener("click", function () { openViewer(+b.dataset.i); }); });
   $(".v-prev").addEventListener("click", function () { showPhoto(vIdx - 1); });
   $(".v-next").addEventListener("click", function () { showPhoto(vIdx + 1); });
@@ -506,8 +530,7 @@
   intro();
   var _render = render; render = function () { _render(); dialLabels(); };
   if (hasGsap) {
-    gsap.ticker.add(function (time) { if (lenis) lenis.raf(time * 1000); update(time); });
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.add(function (time) { update(time); });
     ScrollTrigger.addEventListener("refresh", measure);
   } else {
     (function loop(ts) { update(ts / 1000); requestAnimationFrame(loop); })(0);

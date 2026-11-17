@@ -1,0 +1,11 @@
+// Cloudflare Workers config: serves the static site in public/ and nothing else.
+// public/ is filled by `npm run deploy` (scripts/stage.js) with the built index.html and icons;
+// src/, assets/ and the docs are never uploaded.
+{
+  "name": "elporvenir",
+  "preview_urls": false,
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./public"
+  }
+}

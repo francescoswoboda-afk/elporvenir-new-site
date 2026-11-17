@@ -94,9 +94,17 @@ mark.ph b { font-weight: 500; letter-spacing: .04em; text-transform: none; font-
 /* ---------- fixed layers ---------- */
 .sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 #tree { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+/* the tree rides up with the hero, moved by the browser's scroller so it never lags the page */
+@supports (animation-timeline: scroll()) {
+  html.lift #tree {
+    animation-name: tree-lift; animation-timing-function: linear; animation-fill-mode: backwards;
+    animation-timeline: scroll(root block); animation-range: 0px var(--lift, 1px);
+  }
+}
+@keyframes tree-lift { from { transform: translateY(0); } to { transform: translateY(calc(var(--lift, 0px) * -1)); } }
 .grain {
   position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .55;
-  background-size: 160px 160px; animation: grain 1s steps(5) infinite;
+  background-size: 160px 160px;
 }
 @keyframes grain { 0%,100% { background-position: 0 0; } 20% { background-position: -37px 21px; } 40% { background-position: 53px -44px; } 60% { background-position: -61px -13px; } 80% { background-position: 29px 47px; } }
 main { position: relative; z-index: 2; }
@@ -287,7 +295,7 @@ body.dusk .langs button[aria-pressed="true"] { background: rgba(255,255,255,.12)
 body.dusk .msg, body.dusk .msg-intro { color: #ece6d6; } body.dusk .msg label span { color: rgba(236,230,214,.75); } body.dusk .msg { border-color: rgba(236,230,214,.2); }
 
 /* 03 land */
-.land { height: 380vh; }
+.land { height: 530vh; }
 .land-stage { display: grid; place-items: center; }
 .map-wrap { position: absolute; inset: 0; }
 .map { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -297,6 +305,8 @@ body.dusk .msg, body.dusk .msg-intro { color: #ece6d6; } body.dusk .msg label sp
 .map .continent { fill: var(--ink); fill-opacity: .08; stroke: var(--ink); stroke-opacity: .55; stroke-width: 1.1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
 .map .lagoon { fill: var(--paper); stroke: var(--ink); stroke-opacity: .45; stroke-width: 1; vector-effect: non-scaling-stroke; }
 .map .state { fill: var(--accent); fill-opacity: .2; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.map .flat-continent { fill: var(--ink); fill-opacity: .08; }
+.map .flat-state { fill: var(--accent); fill-opacity: .2; }
 .map .pin circle.core { fill: var(--ink); }
 .map .pin circle.halo { fill: none; stroke: var(--ink); vector-effect: non-scaling-stroke; stroke-width: 1; }
 .map .city { fill: var(--ink); }
@@ -307,8 +317,8 @@ body.dusk .msg, body.dusk .msg-intro { color: #ece6d6; } body.dusk .msg label sp
 .land-photo figcaption { position: absolute; left: var(--pad); bottom: 24px; color: #fff; font-size: var(--fs-small); text-shadow: 0 1px 12px rgba(0,0,0,.5); max-width: 30em; }
 .land-label { position: absolute; left: var(--pad); top: 96px; margin: 0; z-index: 3; }
 .land-steps { position: relative; z-index: 3; margin-top: -100vh; }
-.land-steps .step { height: 96vh; display: flex; align-items: center; padding: 0 var(--pad); }
-.land-steps .step:first-child { height: 92vh; }
+.land-steps .step { height: 132vh; display: flex; align-items: center; padding: 0 var(--pad); }
+.land-steps .step:first-child { height: 134vh; }
 .land-steps .step > * { max-width: 520px; }
 .land-steps .step { flex-direction: column; justify-content: center; align-items: flex-end; text-align: left; }
 .land-steps .step > h2, .land-steps .step > p { width: min(460px, 40vw); }
@@ -496,8 +506,7 @@ body.dusk .c-dot { background: #f1ead8; } body.dusk .c-ring { border-color: #f1e
 
 @media (prefers-reduced-motion: reduce) {
   .grain, .scroll-line, .sound-bars i, .viewer-fig img { animation: none !important; }
-  .scene * { animation: none !important; }
-}
+  .scene * { animation: none !important; }}
 
 /* ============ mobile ============ */
 @media (max-width: 820px) {

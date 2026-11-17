@@ -1,0 +1,7 @@
+{
+  "name": "elporvenir-new-site",
+  "private": true,
+  "scripts": {
+    "deploy": "node scripts/stage.js && npx --yes wrangler@4.40.0 deploy"
+  }
+}

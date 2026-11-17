@@ -87,7 +87,7 @@
   };
 
   P.resize = function () {
-    var dpr = Math.min(window.devicePixelRatio || 1, this.mobile ? 1.6 : 2);
+    var dpr = Math.min(window.devicePixelRatio || 1, this.mobile ? 1.25 : 1.5);
     this.dpr = dpr; this.w = window.innerWidth; this.h = window.innerHeight;
     this.cv.width = Math.round(this.w * dpr); this.cv.height = Math.round(this.h * dpr);
   };
@@ -177,8 +177,15 @@
     var leaves = this.leaves, nodes = this.nodes, wind = this.state.wind * (this.reduced ? .15 : 1);
     var base = mix(C.spring, C.summer, S.green), base2 = mix(C.spring, C.summer2, S.green), base3 = mix(C.spring, C.summer3, S.green);
     var cols = [base, base2, base3, C.yellow, C.amber, C.brown];
-    var paths = [new Path2D(), new Path2D(), new Path2D(), new Path2D(), new Path2D(), new Path2D()];
     var sz0 = .0105 * H * S.leafSize * lg;
+    if (sz0 < .3) return;
+    // Each compound leaf is stamped from a small pre-drawn image (one per colour and droop)
+    // instead of building ~7 ellipses per leaf every frame: that took ~150 ms a frame.
+    var cssCols = []; for (var cb = 0; cb < 6; cb++) cssCols.push(rgb(mix(cols[cb], C.barkDusk, dusk * .7)));
+    var sp = this.leafSprites(cssCols, sz0);
+    var M = ctx.getTransform(), Us = sp.Us, dpr = this.dpr;
+    // stamp in colour order (like the original one-fill-per-colour), so the layering matches
+    var Q = this.leafQ || (this.leafQ = [[], [], [], [], [], []]); for (var qb = 0; qb < 6; qb++) Q[qb].length = 0;
     for (var i = 0; i < leaves.length; i++) {
       var lf = leaves[i];
       if (lf.k > S.leaf) continue;
@@ -195,17 +202,52 @@
       var ang = n.wa + lf.a + Math.sin(t * 2.6 + lf.ph) * .22 * wind;
       var bucket = lf.b;
       if (S.turn > lf.k2) bucket = S.turn - lf.k2 < .25 ? 3 : S.turn - lf.k2 < .5 ? 4 : 5;
-      var p = paths[bucket], RL = sz0 * 2.2 * lf.sz, ca = Math.cos(ang), sa = Math.sin(ang), fl = Math.sin(t * 4.3 + lf.ph * 2) * .18 * wind;
-      // rachis gently droops
-      for (var q = 0; q < 4; q++) {
-        var tq = .28 + q * .24, lx = px + ca * RL * tq, ly = py + sa * RL * tq + lf.droop * RL * tq * tq, ll = sz0 * lf.sz * (q === 3 ? .95 : .78), lw = ll * .3;
-        if (q === 3) { p.moveTo(lx + ca * ll, ly + sa * ll); p.ellipse(lx + ca * ll * .6, ly + sa * ll * .6, ll, lw, ang, 0, TAU); break; }
-        var a1 = ang - .95 + fl, a2 = ang + .95 - fl;
-        p.moveTo(lx + Math.cos(a1) * ll * 1.6, ly + Math.sin(a1) * ll * 1.6); p.ellipse(lx + Math.cos(a1) * ll * .8, ly + Math.sin(a1) * ll * .8, ll, lw, a1, 0, TAU);
-        p.moveTo(lx + Math.cos(a2) * ll * 1.6, ly + Math.sin(a2) * ll * 1.6); p.ellipse(lx + Math.cos(a2) * ll * .8, ly + Math.sin(a2) * ll * .8, ll, lw, a2, 0, TAU);
+      var img = sp.img[bucket][lf.droop < .27 ? 0 : lf.droop < .39 ? 1 : 2];
+      // rotate to the leaf's angle; mirror leaves pointing left so they still droop downwards
+      var k = sz0 * lf.sz / (Us / dpr), co = Math.cos(ang), si = Math.sin(ang), ky = co < 0 ? -k : k;
+      var r0 = co * k, r1 = si * k, r2 = -si * ky, r3 = co * ky;
+      Q[bucket].push(img, M.a * r0 + M.c * r1, M.b * r0 + M.d * r1, M.a * r2 + M.c * r3, M.b * r2 + M.d * r3, M.a * px + M.c * py + M.e, M.b * px + M.d * py + M.f);
+    }
+    for (var b = 0; b < 6; b++) {
+      var L = Q[b];
+      for (var j = 0; j < L.length; j += 7) {
+        ctx.setTransform(L[j + 1], L[j + 2], L[j + 3], L[j + 4], L[j + 5], L[j + 6]);
+        ctx.drawImage(L[j], sp.ox, sp.oy, L[j].width / dpr, L[j].height / dpr);
       }
     }
-    for (var b = 0; b < 6; b++) { ctx.fillStyle = rgb(mix(cols[b], C.barkDusk, dusk * .7)); ctx.fill(paths[b]); }
+    ctx.setTransform(M);
+  };
+
+  // Pre-draw one compound leaf (stem with 3 leaflet pairs + a tip leaflet) per colour bucket
+  // and droop level. Units: U = one leaflet length; the leaf points along +x from (0,0).
+  P.leafSprites = function (cssCols, sz0) {
+    var dpr = this.dpr, Us = Math.max(6, Math.ceil(sz0 * 1.1 * dpr)), key = cssCols.join() + "|" + Us;
+    var c = this.leafCache;
+    if (c && c.key === key) return c;
+    var X0 = -.6, X1 = 4.1, Y0 = -1.7, Y1 = 2.9, W = Math.ceil((X1 - X0) * Us), Hh = Math.ceil((Y1 - Y0) * Us);
+    var droops = [.2, .33, .46], img = [];
+    for (var b = 0; b < 6; b++) {
+      img.push([]);
+      for (var dI = 0; dI < 3; dI++) {
+        var old = c && c.img[b][dI], cv = old && old.width === W && old.height === Hh ? old : document.createElement("canvas");
+        cv.width = W; cv.height = Hh;
+        var g = cv.getContext("2d"); g.setTransform(Us, 0, 0, Us, -X0 * Us, -Y0 * Us); g.clearRect(X0, Y0, X1 - X0, Y1 - Y0);
+        g.fillStyle = cssCols[b]; g.beginPath();
+        var RL = 2.2, dr = droops[dI];
+        for (var q = 0; q < 4; q++) {
+          var tq = .28 + q * .24, lx = RL * tq, ly = dr * RL * tq * tq, ll = q === 3 ? .95 : .78, lw = ll * .3;
+          if (q === 3) { g.moveTo(lx + ll * 1.6, ly); g.ellipse(lx + ll * .6, ly, ll, lw, 0, 0, TAU); break; }
+          var a1 = -.95, a2 = .95;
+          g.moveTo(lx + Math.cos(a1) * ll * 1.6, ly + Math.sin(a1) * ll * 1.6); g.ellipse(lx + Math.cos(a1) * ll * .8, ly + Math.sin(a1) * ll * .8, ll, lw, a1, 0, TAU);
+          g.moveTo(lx + Math.cos(a2) * ll * 1.6, ly + Math.sin(a2) * ll * 1.6); g.ellipse(lx + Math.cos(a2) * ll * .8, ly + Math.sin(a2) * ll * .8, ll, lw, a2, 0, TAU);
+        }
+        g.fill();
+        img[b].push(cv);
+      }
+    }
+    // offset of the sprite's top-left from the leaf origin, in sprite-CSS px
+    this.leafCache = { key: key, img: img, Us: Us, ox: X0 * Us / dpr, oy: Y0 * Us / dpr };
+    return this.leafCache;
   };
 
   P.drawCatkins = function (ctx, H, S, t, lg, dusk) {
@@ -459,16 +501,17 @@
         // the main tree travels into the orchard's front row
         var k = smooth(0, 1, st.O);
         var bx = lerp(st.x, x, k), by = lerp(st.base, y, k), H = lerp(st.H, th * .86, k);
-        ctx.globalAlpha = st.alpha; self.drawTree(ctx, bx, by, H, st.G, S, t, true, st.dusk); ctx.globalAlpha = 1; drawn = true;
+        self.layered(st.alpha, function (c) { self.drawTree(c, bx, by, H, st.G, S, t, true, st.dusk); }); drawn = true;
       });
     }
     if (!drawn && st.alpha > .005) {
-      ctx.globalAlpha = st.alpha;
-      var sx = st.sx || 1; if (sx !== 1) { ctx.translate(st.x, 0); ctx.scale(sx, 1); ctx.translate(-st.x, 0); }
-      this.drawGround(ctx, st.x, st.base, st.H, S, t, smooth(0, .3, st.G + st.seed * .3), st.dusk);
-      if (st.G < .12) this.drawSeed(ctx, st, t);
-      this.drawTree(ctx, st.x, st.base, st.H, st.G, S, t, true, st.dusk);
-      this.drawBees(ctx, st.x, st.base, st.H, S, t);
+      this.layered(st.alpha, function (c) {
+        var sx = st.sx || 1; if (sx !== 1) { c.translate(st.x, 0); c.scale(sx, 1); c.translate(-st.x, 0); }
+        self.drawGround(c, st.x, st.base, st.H, S, t, smooth(0, .3, st.G + st.seed * .3), st.dusk);
+        if (st.G < .12) self.drawSeed(c, st, t);
+        self.drawTree(c, st.x, st.base, st.H, st.G, S, t, true, st.dusk);
+        self.drawBees(c, st.x, st.base, st.H, S, t);
+      });
       ctx.globalAlpha = 1; ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     }
     this.drawParts(ctx, t, st.dusk);
@@ -481,10 +524,25 @@
     var split = smooth(.6, 1, k) * (1 - smooth(.02, .12, st.G));
     var a = 1 - smooth(.04, .12, st.G);
     if (a <= 0 || k <= 0) return;
-    ctx.globalAlpha = a * st.alpha;
+    ctx.globalAlpha = a;
     this.nutShape(ctx, st.x - split * r * .7, y, r, -split * .6, 0);
     if (split > 0) this.nutShape(ctx, st.x + split * r * .7, y, r, split * .6, 0);
-    ctx.globalAlpha = st.alpha;
+    ctx.globalAlpha = 1;
+  };
+
+  // Draw fully opaque, then fade the result as one image. Fading each stroke separately
+  // shows every overlap (dark joints, a block at the trunk base) and some parts reset to
+  // full opacity mid-draw, so a half-faded tree looked broken.
+  P.layered = function (a, fn) {
+    if (a >= .995) { this.ctx.globalAlpha = 1; fn(this.ctx); return; }
+    var L = this.layer;
+    if (!L) { L = this.layer = document.createElement("canvas"); this.lctx = L.getContext("2d"); }
+    if (L.width !== this.cv.width || L.height !== this.cv.height) { L.width = this.cv.width; L.height = this.cv.height; }
+    var lc = this.lctx;
+    lc.setTransform(1, 0, 0, 1, 0, 0); lc.clearRect(0, 0, L.width, L.height);
+    lc.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); lc.globalAlpha = 1;
+    fn(lc);
+    var c = this.ctx; c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a; c.drawImage(L, 0, 0); c.restore();
   };
 
   /* ---------- interaction ---------- */

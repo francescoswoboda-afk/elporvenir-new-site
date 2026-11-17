@@ -36,9 +36,15 @@
     for (var lat = 10; lat >= -60; lat -= 10) grat += "M" + X(-90) + " " + Y(lat) + "H" + X(-25);
     el("path", { d: grat, "class": "grat" }, g);
     el("path", { d: "M" + X(-95) + " " + Y(-23.44) + "H" + X(-20), "class": "tropic" }, g);
-    el("path", { d: pts(SA), "class": "continent" }, g);
-    el("path", { d: pts(RS), "class": "state" }, g);
-    el("path", { d: pts(LAGOA), "class": "lagoon" }, g);
+    this.shapes = [
+      el("path", { d: pts(SA), "class": "continent" }, g),
+      el("path", { d: pts(RS), "class": "state" }, g),
+      el("path", { d: pts(LAGOA), "class": "lagoon" }, g)
+    ];
+    // At farm zoom the shapes above are hundreds of screens wide and Chrome sometimes fails to
+    // draw them (blank, flashing frames). Once no border can be on screen, these two flat,
+    // screen-sized fills stand in for them with the same colours.
+    this.flat = [el("rect", { "class": "flat-continent" }, g), el("rect", { "class": "flat-state" }, g)];
     // hills: stylised contour rings around the farm (decorative)
     var cg = el("g", { "class": "contours" }, g);
     for (var i = 1; i <= 9; i++) {
@@ -97,16 +103,33 @@
     var x = X(cx), y = Y(cy);
     if (this.mobile) y += hh * .16; else x += ww * .17;
     this.svg.setAttribute("viewBox", (x - ww / 2) + " " + (y - hh / 2) + " " + ww + " " + hh);
+    // deep zoom: the view sits well inside Rio Grande do Sul, so swap the huge shapes for flat fills
+    var deep = span < .5, s;
+    if (deep !== this.deep) {
+      this.deep = deep;
+      for (s = 0; s < this.shapes.length; s++) this.shapes[s].style.display = deep ? "none" : "";
+      for (s = 0; s < this.flat.length; s++) this.flat[s].style.display = deep ? "" : "none";
+    }
+    if (deep) for (s = 0; s < this.flat.length; s++) {
+      var f = this.flat[s]; f.setAttribute("x", x - ww); f.setAttribute("y", y - hh); f.setAttribute("width", ww * 2); f.setAttribute("height", hh * 2);
+    }
     // labels fade with their stage
     for (var l = 0; l < this.labels.length; l++) {
       var L = this.labels[l], d = Math.abs(p - L.stage), o = L.stage === 0 ? 1 - Math.min(1, p) : Math.max(0, 1 - d * 1.4);
       if (L.stage === 3) o = Math.max(0, Math.min(1, (p - 2.2) * 2)) * (1 - Math.max(0, (p - 2.85) * 6));
-      L.el.style.opacity = o.toFixed(3);
+      // hidden labels leave rendering entirely: at deep zoom their glyphs would be
+      // hundreds of thousands of pixels tall, which makes Chrome drop frames
+      L.el.style.opacity = o.toFixed(3); L.el.style.display = o > .001 ? "" : "none";
     }
     var pr = span * .0055;
     for (var c = 0; c < this.cities.length; c++) this.cities[c].setAttribute("r", (span * .004).toFixed(4));
-    this.core.setAttribute("r", pr); this.halo.setAttribute("r", pr * (2.2 + Math.sin(Date.now() / 300) * .6));
+    this.core.setAttribute("r", pr); this.pr = pr; this.pulse();
     this.contours.style.opacity = Math.max(0, Math.min(1, (p - 1.6) * 1.5)).toFixed(3);
+  };
+  // The pin's halo pulse. Driven from JS (only while the map is on screen): a CSS transform
+  // animation on it makes Chrome drop whole frames at deep zoom.
+  P.pulse = function () {
+    if (this.pr) this.halo.setAttribute("r", (this.pr * (2.2 + Math.sin(Date.now() / 300) * .6)).toFixed(6));
   };
   window.EPMap = EPMap;
 })();
