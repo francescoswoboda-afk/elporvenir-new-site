@@ -65,7 +65,9 @@
     this.oceanLabel = this.text(X(-49.5), Y(-33.2), "", .28, 1, "ocean");
     this.oceanLabel0 = this.text(X(-38), Y(-36), "", 1.5, 0, "ocean");
     this.farmLabel = this.text(X(FARM[0]) + .025, Y(FARM[1]) - .025, "Monte Alverne", .024, 2);
-    this.approxLabel = this.text(X(FARM[0]) + .025, Y(FARM[1]) + .012, "", .009, 3, "approx");
+    // centred just under the pin, clear of the step text on the right
+    this.approxLabel = this.text(X(FARM[0]), Y(FARM[1]) + .011, "", .0042, 3, "approx");
+    this.approxLabel.setAttribute("text-anchor", "middle");
     this.g = g;
     this.set(0);
   }
@@ -77,16 +79,16 @@
   P.text = function (x, y, str, size, stage, key) {
     // Chrome will not draw sub-pixel font sizes inside a zoomed viewBox: draw at 10 and scale
     var t = el("text", { x: 0, y: 0, "font-size": 10, transform: "translate(" + x + " " + y + ") scale(" + (size / 10) + ")" }, this.g); t.textContent = str;
-    this.labels.push({ el: t, stage: stage, key: key }); return t;
+    this.labels.push({ el: t, stage: stage, key: key, size: size }); return t;
   };
   P.relabel = function (tr) {
     this.tropicLabel.textContent = tr("land.tropic");
     this.oceanLabel.textContent = this.oceanLabel0.textContent = tr("land.ocean");
-    this.approxLabel.textContent = tr("land.approx").replace(/«|»/g, "").replace("VERIFY", "[VERIFY]");
+    this.approxLabel.textContent = tr("land.approx");
   };
   P.layout = function () {
     var w = window.innerWidth, h = window.innerHeight;
-    this.aspect = w / h; this.mobile = w < 820;
+    this.aspect = w / h; this.mobile = w < 820; this.hPx = h;
   };
   // p: 0..3 continuous
   P.set = function (p) {
@@ -117,6 +119,9 @@
     for (var l = 0; l < this.labels.length; l++) {
       var L = this.labels[l], d = Math.abs(p - L.stage), o = L.stage === 0 ? 1 - Math.min(1, p) : Math.max(0, 1 - d * 1.4);
       if (L.stage === 3) o = Math.max(0, Math.min(1, (p - 2.2) * 2)) * (1 - Math.max(0, (p - 2.85) * 6));
+      // labels grow with the zoom; fade them out before they turn into giant ghost text
+      var px = L.size * this.hPx / hh;
+      o *= Math.max(0, Math.min(1, (40 - px) / 12));
       // hidden labels leave rendering entirely: at deep zoom their glyphs would be
       // hundreds of thousands of pixels tall, which makes Chrome drop frames
       L.el.style.opacity = o.toFixed(3); L.el.style.display = o > .001 ? "" : "none";

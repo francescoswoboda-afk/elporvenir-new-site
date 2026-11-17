@@ -102,7 +102,9 @@ Dibujado en canvas 2D, de forma procedural, con una semilla fija para que siempr
 
 ## 7. Honestidad
 
-No hay nada inventado: ni historia, ni fechas, ni premios, ni certificaciones, ni citas. Todo lo que debe aportar la familia aparece como una etiqueta visible **[TBD]** (falta el dato) o **[VERIFY]** (dato tomado de la web actual que hay que confirmar).
+No hay nada inventado: ni historia, ni fechas, ni premios, ni certificaciones, ni citas. Todo lo que debe aportar la familia está marcado en `i18n.js` como **«TBD»** (falta el dato) o **«VERIFY»** (dato tomado de la web antigua que hay que confirmar).
+
+Desde que la web está publicada (noviembre de 2026), las etiquetas solo se ven en **modo borrador**: añadiendo `?draft` a la dirección (por ejemplo `elporvenir.farm/?draft`). En la web pública, la marca [VERIFY] desaparece y la frase que necesita un dato [TBD] no se muestra; los bloques que solo eran un hueco (marcos vacíos de la galería, la cifra de cosechas, teléfono y WhatsApp, el origen del nombre) se ocultan hasta que se rellenen.
 
 Pendientes principales:
 

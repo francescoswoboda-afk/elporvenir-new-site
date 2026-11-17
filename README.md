@@ -8,7 +8,7 @@ A single-page showcase site for El Porvenir Farm, a pecan orchard in Rio Grande 
 - `src/` — the source you edit:
   - `index.template.html` — page structure
   - `style.css` — design (type scale, colours, layout)
-  - `i18n.js` — all text, in English, Portuguese and Spanish (`«TBD»` / `«VERIFY»` show as placeholders)
+  - `i18n.js` — all text, in English, Portuguese and Spanish (`«TBD»` / `«VERIFY»` placeholders show only with `?draft` in the address)
   - `tree.js` — the living pecan tree (canvas)
   - `map.js` — the animated map
   - `main.js` — scroll, seasons, navigation, gallery and everything that ties it together

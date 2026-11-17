@@ -74,10 +74,6 @@
   <!-- 01 HOME -->
   <section class="sec hero" id="home" data-sec="home">
     <h1 class="wordmark behind" aria-label="El Porvenir"><span class="wm-el">El</span><span class="wm-p">Porvenir</span></h1>
-    <div class="hero-top">
-      <p class="label" data-t="hero.place">Rio Grande do Sul · Brasil</p>
-      <p class="def" data-t="hero.def"></p>
-    </div>
     <div class="hero-bottom">
       <p class="hero-line split" data-t="hero.line">A pecan orchard in southern Brazil, where time is measured in seasons.</p>
       <p class="scroll-hint"><span class="scroll-line" aria-hidden="true"></span><span data-t="ui.scroll">Scroll to walk through the year</span></p>
@@ -89,9 +85,9 @@
     <div class="col">
       <p class="label"><span class="n">02</span> <span data-t="about.kicker">Our story</span></p>
       <h2 class="h1 split" data-t="about.title">A hillside and a great deal of patience.</h2>
-      <p class="body reveal" data-t="about.p1"></p>
+      <p class="body lead reveal" data-t="about.p1"></p>
       <p class="body reveal" data-t="about.p2"></p>
-      <figure class="name-note reveal">
+      <figure class="name-note reveal hide-if-empty">
         <figcaption class="label" data-t="about.quoteLabel">Why “El Porvenir”?</figcaption>
         <blockquote data-t="about.quote"></blockquote>
       </figure>
@@ -131,10 +127,10 @@
       <p class="label land-label"><span class="n">03</span> <span data-t="land.kicker">The land</span></p>
     </div>
     <div class="land-steps">
-      <div class="step" data-step="0"><h2 class="h2" data-t="land.s1t">South America.</h2><p data-t="land.s1"></p></div>
-      <div class="step" data-step="1"><h2 class="h2" data-t="land.s2t">Rio Grande do Sul.</h2><p data-t="land.s2"></p></div>
-      <div class="step" data-step="2"><h2 class="h2" data-t="land.s3t">Monte Alverne.</h2><p data-t="land.s3"></p></div>
-      <div class="step" data-step="3"><h2 class="h2" data-t="land.s4t">El Porvenir.</h2><p data-t="land.s4"></p></div>
+      <div class="step" data-step="0"><div class="step-in"><h2 class="h2" data-t="land.s1t">South America.</h2><p data-t="land.s1"></p></div></div>
+      <div class="step" data-step="1"><div class="step-in"><h2 class="h2" data-t="land.s2t">Rio Grande do Sul.</h2><p data-t="land.s2"></p></div></div>
+      <div class="step" data-step="2"><div class="step-in"><h2 class="h2" data-t="land.s3t">Monte Alverne.</h2><p data-t="land.s3"></p></div></div>
+      <div class="step" data-step="3"><div class="step-in"><h2 class="h2" data-t="land.s4t">El Porvenir.</h2><p data-t="land.s4"></p></div></div>
     </div>
   </section>
 
@@ -291,13 +287,13 @@
       <p class="hint" data-t="gallery.hint"></p>
     </div>
     <div class="wall" role="list">
-      <figure class="frame f-l" role="listitem"><button type="button" class="frame-btn" data-i="0"><img src="{{IMG_AERIAL_S}}" alt="" data-alt="gallery.1" loading="lazy" /></button><figcaption><span class="cat">I</span><span data-t="gallery.1"></span></figcaption></figure>
-      <figure class="frame f-p tbd" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t1"></span></div><figcaption><span class="cat">II</span><span data-t="gallery.t1"></span></figcaption></figure>
-      <figure class="frame f-m" role="listitem"><button type="button" class="frame-btn" data-i="1"><img src="{{IMG_ORCHARD_S}}" alt="" data-alt="gallery.2" loading="lazy" /></button><figcaption><span class="cat">III</span><span data-t="gallery.2"></span></figcaption></figure>
-      <figure class="frame f-s tbd" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t2"></span></div><figcaption><span class="cat">IV</span><span data-t="gallery.t2"></span></figcaption></figure>
-      <figure class="frame f-p tbd" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t3"></span></div><figcaption><span class="cat">V</span><span data-t="gallery.t3"></span></figcaption></figure>
-      <figure class="frame f-m tbd" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t4"></span></div><figcaption><span class="cat">VI</span><span data-t="gallery.t4"></span></figcaption></figure>
-      <figure class="frame f-s tbd" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t5"></span></div><figcaption><span class="cat">VII</span><span data-t="gallery.t5"></span></figcaption></figure>
+      <figure class="frame f-l" role="listitem"><button type="button" class="frame-btn" data-i="0"><img src="{{IMG_AERIAL_S}}" alt="" data-alt="gallery.1" loading="lazy" /></button><figcaption><span class="cat"></span><span data-t="gallery.1"></span></figcaption></figure>
+      <figure class="frame f-p tbd hide-if-empty" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t1"></span></div><figcaption><span class="cat"></span><span data-t="gallery.t1"></span></figcaption></figure>
+      <figure class="frame f-m" role="listitem"><button type="button" class="frame-btn" data-i="1"><img src="{{IMG_ORCHARD_S}}" alt="" data-alt="gallery.2" loading="lazy" /></button><figcaption><span class="cat"></span><span data-t="gallery.2"></span></figcaption></figure>
+      <figure class="frame f-s tbd hide-if-empty" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t2"></span></div><figcaption><span class="cat"></span><span data-t="gallery.t2"></span></figcaption></figure>
+      <figure class="frame f-p tbd hide-if-empty" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t3"></span></div><figcaption><span class="cat"></span><span data-t="gallery.t3"></span></figcaption></figure>
+      <figure class="frame f-m tbd hide-if-empty" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t4"></span></div><figcaption><span class="cat"></span><span data-t="gallery.t4"></span></figcaption></figure>
+      <figure class="frame f-s tbd hide-if-empty" role="listitem"><div class="tbd-box" aria-hidden="true"><span data-t="gallery.t5"></span></div><figcaption><span class="cat"></span><span data-t="gallery.t5"></span></figcaption></figure>
     </div>
   </section>
 
@@ -310,7 +306,7 @@
         <div class="num reveal"><dt data-t="num.trees"></dt><dd><span class="count" data-to="6000" data-sep="1">6,000</span></dd></div>
         <div class="num reveal"><dt data-t="num.ha"></dt><dd><span class="count" data-to="72">72</span></dd></div>
         <div class="num reveal"><dt data-t="num.years"></dt><dd><span class="count" data-to="12">12</span></dd></div>
-        <div class="num reveal"><dt data-t="num.harvests"></dt><dd><span class="count tbd-num">—</span></dd></div>
+        <div class="num reveal hide-if-empty"><dt data-t="num.harvests"></dt><dd><span class="count tbd-num">—</span></dd></div>
       </dl>
     </div>
   </section>
@@ -322,8 +318,8 @@
       <h2 class="h1 split" data-t="contact.title">Come and see the trees. Or just say hello.</h2>
       <dl class="contact-list">
         <div class="reveal"><dt data-t="contact.email">Email</dt><dd><a class="big-link" href="mailto:info@elporvenir.farm">info@elporvenir.farm</a> <mark class="ph" data-k="VERIFY"></mark> <button type="button" class="copy" data-copy="info@elporvenir.farm" data-t="ui.copy">Copy</button></dd></div>
-        <div class="reveal"><dt data-t="contact.phone">Phone</dt><dd><mark class="ph" data-k="TBD"></mark></dd></div>
-        <div class="reveal"><dt data-t="contact.wa">WhatsApp</dt><dd><mark class="ph" data-k="TBD"></mark></dd></div>
+        <div class="reveal tbd-row"><dt data-t="contact.phone">Phone</dt><dd><mark class="ph" data-k="TBD"></mark></dd></div>
+        <div class="reveal tbd-row"><dt data-t="contact.wa">WhatsApp</dt><dd><mark class="ph" data-k="TBD"></mark></dd></div>
         <div class="reveal"><dt data-t="contact.ig">Instagram</dt><dd><a class="big-link" href="https://www.instagram.com/elporvenirfarm/" rel="noopener">@elporvenirfarm</a> <mark class="ph" data-k="VERIFY"></mark></dd></div>
         <div class="reveal"><dt data-t="contact.addr">The farm</dt><dd data-t="contact.addrv"></dd></div>
       </dl>

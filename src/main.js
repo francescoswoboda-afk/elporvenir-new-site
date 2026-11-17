@@ -41,12 +41,21 @@
   try { lang = localStorage.getItem("ep-lang") || ""; } catch (e) {}
   if (!I18N[lang]) { var nl = (navigator.language || "en").slice(0, 2); lang = I18N[nl] ? nl : "en"; }
   function tr(k) { return (I18N[lang] && I18N[lang][k]) || I18N.en[k] || ""; }
+  // Placeholders («TBD», «VERIFY») stay in i18n.js for the farm to fill in, but only show in
+  // draft mode (add ?draft to the address). On the public page a «VERIFY» marker is dropped
+  // and any sentence that still needs a «TBD» fact is left out, so nothing reads as broken.
+  var draft = /[?&]draft\b/.test(location.search);
+  if (draft) root.classList.add("draft");
+  function tidy(str) {
+    if (draft) return str;
+    return str.replace(/[^.!?>«]*«TBD[^»]*»\s*[.!?]?/g, "").replace(/\s*«VERIFY[^»]*»/g, "").replace(/\s+([.,;:])/g, "$1").trim();
+  }
   function fmt(str) {
-    return str.replace(/«(TBD|VERIFY)(?::\s*([^»]*))?»/g, function (_, k, note) {
+    return tidy(str).replace(/«(TBD|VERIFY)(?::\s*([^»]*))?»/g, function (_, k, note) {
       return '<mark class="ph" data-k="' + k + '">' + (note ? "<b>" + note + "</b>" : "") + "</mark>";
     });
   }
-  function plain(str) { return str.replace(/«(TBD|VERIFY)(?::\s*([^»]*))?»/g, function (_, k, n) { return "[" + k + (n ? ": " + n : "") + "]"; }).replace(/<[^>]+>/g, ""); }
+  function plain(str) { return tidy(str).replace(/«(TBD|VERIFY)(?::\s*([^»]*))?»/g, function (_, k, n) { return "[" + k + (n ? ": " + n : "") + "]"; }).replace(/<[^>]+>/g, ""); }
   function splitWords(el) {
     var words = el.textContent.trim().split(/\s+/);
     el.innerHTML = words.map(function (w) { return '<span class="w"><span>' + w + "</span></span>"; }).join(" ");
@@ -57,13 +66,15 @@
       var k = el.getAttribute("data-t"), v = tr(k);
       if (el.classList.contains("split")) { el.innerHTML = v; splitWords(el); }
       else el.innerHTML = fmt(v);
+      // a block whose only content was a placeholder disappears until the farm fills it in
+      var box = el.closest(".hide-if-empty"); if (box) box.hidden = !el.textContent.trim() && !el.querySelector("mark");
     });
     $$("[data-t-aria]").forEach(function (el) { el.setAttribute("aria-label", plain(tr(el.getAttribute("data-t-aria")))); });
     $$("img[data-alt]").forEach(function (el) { el.alt = plain(tr(el.getAttribute("data-alt"))); });
     $$("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lang === lang)); });
     root.lang = lang === "pt" ? "pt-BR" : lang;
     doc.title = tr("meta.title");
-    if (map) map.relabel(tr);
+    if (map) map.relabel(function (k) { return plain(tr(k)); });
     $$(".split").forEach(function (el) { if (el.dataset.seen || !animated) el.classList.add("done"); });
     $$(".count[data-to]").forEach(function (el) { el.textContent = num(el.dataset.seen || !animated ? +el.dataset.to : 0); });
   }
@@ -166,7 +177,7 @@
   var PAPER = [hex("#e9ebe4"), hex("#f1efdf"), hex("#f4ecd8"), hex("#f2e3c8")];
   var ACCENT = [hex("#4a6273"), hex("#5a7a28"), hex("#43612a"), hex("#8c521c")];
   function cyc(arr, s) { var m = ((s % 4) + 4) % 4, i = Math.floor(m), f = m - i, e = f * f * (3 - 2 * f); return mixc(arr[i], arr[(i + 1) % 4], smooth(.55, 1, f) * 1 + 0 * e); }
-  var lastPaper = "", lastAccent = "", landP = 0, lastLandP = -1;
+  var lastPaper = "", lastAccent = "", landP = 0, lastLandP = -1, stepIns = $$(".step-in"), stepOp = [];
 
   /* ---------- sky: one day passes while you scroll ---------- */
   var sky = $(".sky");
@@ -214,6 +225,14 @@
     if (!nearLand || reduced || !animated) landP = pLt;
     else { landP = lerp(landP, pLt, 1 - Math.pow(.004, dt)); if (Math.abs(landP - pLt) < .0002) landP = pLt; }
     if (nearLand && !reduced && landP === lastLandP) map.pulse();
+    // each step's text is fully visible only at its resting spot and fades as it moves on,
+    // so two steps never show at once
+    if (nearLand) for (var si = 0; si < stepIns.length; si++) {
+      var se = stepIns[si], sr = se.getBoundingClientRect();
+      var rest = isMobile() ? VH * .56 : VH * .5 - 110;
+      var so = clamp(1 - Math.abs(sr.top - rest) / (VH * .2), 0, 1).toFixed(2);
+      if (stepOp[si] !== so) { se.style.opacity = so; stepOp[si] = so; }
+    }
     if (landP !== lastLandP) {
       lastLandP = landP;
       var pL = landP;
@@ -506,7 +525,6 @@
     tl.from(".wordmark .ch", { yPercent: 70, opacity: 0, duration: 1.6, ease: "expo.out", stagger: .06 }, 0)
       .from(".wm-el", { opacity: 0, x: -20, duration: 1.4, ease: "expo.out" }, .3)
       .fromTo(".wordmark", { "--wght": 200 }, { "--wght": 300, duration: 3, ease: "power1.out" }, 0)
-      .from(".hero-top > *", { opacity: 0, y: 14, duration: 1.2, ease: "expo.out", stagger: .12 }, .5)
       .to(st, { seed: 1, duration: 1.6, ease: "none" }, .4)
       .to(st, { G: 1, duration: 4.6, ease: "power2.inOut" }, 2.0)
       .fromTo(".hero-line .w > span", { yPercent: 108, y: 0 }, { yPercent: 0, y: 0, duration: 1.3, ease: "expo.out", stagger: .04, onComplete: function () { $(".hero-line").classList.add("done"); } }, 3.6)
