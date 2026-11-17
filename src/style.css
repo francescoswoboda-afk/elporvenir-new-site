@@ -186,7 +186,8 @@ body.dusk .langs button[aria-pressed="true"] { background: rgba(255,255,255,.12)
 .wordmark .ch { display: inline-block; }
 .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 30px; position: relative; z-index: 2; padding-top: 4px; }
 .hero-top .label { margin: 0; }
-.def { margin: 0; max-width: 19em; text-align: right; font-size: var(--fs-small); line-height: var(--lh-small); color: var(--ink-2); }
+/* the name's meaning sits just above the tagline: all hero words in one place */
+.def { margin: 0 0 14px; max-width: 32em; font-size: var(--fs-small); line-height: var(--lh-small); color: var(--ink-2); }
 .def i { font-family: var(--display); font-size: 1.25em; color: var(--ink); }
 .hero-bottom { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
 .hero-line { font: 400 var(--fs-lead)/var(--lh-lead) var(--text); max-width: 21em; margin: 0; }

@@ -198,7 +198,8 @@ body.dusk .langs button[aria-pressed="true"] { background: rgba(255,255,255,.12)
 .wordmark .ch { display: inline-block; }
 .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 30px; position: relative; z-index: 2; padding-top: 4px; }
 .hero-top .label { margin: 0; }
-.def { margin: 0; max-width: 19em; text-align: right; font-size: var(--fs-small); line-height: var(--lh-small); color: var(--ink-2); }
+/* the name's meaning sits just above the tagline: all hero words in one place */
+.def { margin: 0 0 14px; max-width: 32em; font-size: var(--fs-small); line-height: var(--lh-small); color: var(--ink-2); }
 .def i { font-family: var(--display); font-size: 1.25em; color: var(--ink); }
 .hero-bottom { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
 .hero-line { font: 400 var(--fs-lead)/var(--lh-lead) var(--text); max-width: 21em; margin: 0; }
@@ -687,7 +688,10 @@ body.dusk .c-dot { background: #f1ead8; } body.dusk .c-ring { border-color: #f1e
   <section class="sec hero" id="home" data-sec="home">
     <h1 class="wordmark behind" aria-label="El Porvenir"><span class="wm-el">El</span><span class="wm-p">Porvenir</span></h1>
     <div class="hero-bottom">
-      <p class="hero-line split" data-t="hero.line">A pecan orchard in southern Brazil, where time is measured in seasons.</p>
+      <div class="hero-words">
+        <p class="def" data-t="hero.def"></p>
+        <p class="hero-line split" data-t="hero.line">A pecan orchard in southern Brazil, where time is measured in seasons.</p>
+      </div>
       <p class="scroll-hint"><span class="scroll-line" aria-hidden="true"></span><span data-t="ui.scroll">Scroll to walk through the year</span></p>
     </div>
   </section>
@@ -2167,7 +2171,7 @@ window.EP_I18N = {
   // season at the start and end of each section; tree pose [x, base, H, alpha] for desktop and mobile
   var SEASON = { home: [2, 2], about: [2.05, 2.35], values: [2.38, 2.55], land: [2.58, 2.9], nature: [2.95, 3.98], year: [4, 7.66], harvest: [7.7, 7.92], gallery: [7.96, 8], numbers: [8, 8], contact: [8, 8], rest: [8, 8] };
   var POSE_D = { home: [.5, .9, .94, 1], about: [.5, .9, .94, 0], values: [.88, .97, .62, 0], land: [.8, .96, .7, 0], nature: [.35, .93, .92, 0], year: [.35, .93, .92, 1], harvest: [.95, .97, .45, 0], gallery: [.9, .97, .5, 0], numbers: [.84, .95, .74, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
-  var POSE_M = { home: [.5, .755, .74, 1], about: [.5, .755, .74, 0], values: [.5, .95, .8, 0], land: [.5, .95, .7, 0], nature: [.5, .56, .52, 0], year: [.5, .56, .52, 1], harvest: [.8, .97, .5, 0], gallery: [.5, .97, .5, 0], numbers: [.55, .95, .8, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
+  var POSE_M = { home: [.5, .7, .66, 1], about: [.5, .7, .66, 0], values: [.5, .95, .8, 0], land: [.5, .95, .7, 0], nature: [.5, .56, .52, 0], year: [.5, .56, .52, 1], harvest: [.8, .97, .5, 0], gallery: [.5, .97, .5, 0], numbers: [.55, .95, .8, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
 
   function measure() {
     VH = window.innerHeight; VW = window.innerWidth;
@@ -2576,6 +2580,7 @@ window.EP_I18N = {
       .to(st, { seed: 1, duration: 1.6, ease: "none" }, .4)
       .to(st, { G: 1, duration: 4.6, ease: "power2.inOut" }, 2.0)
       .fromTo(".hero-line .w > span", { yPercent: 108, y: 0 }, { yPercent: 0, y: 0, duration: 1.3, ease: "expo.out", stagger: .04, onComplete: function () { $(".hero-line").classList.add("done"); } }, 3.6)
+      .from(".def", { opacity: 0, y: 10, duration: 1.2, ease: "expo.out" }, 3.4)
       .from(".scroll-hint", { opacity: 0, duration: 1 }, 5.2);
   }
 

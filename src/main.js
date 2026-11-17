@@ -119,7 +119,7 @@
   // season at the start and end of each section; tree pose [x, base, H, alpha] for desktop and mobile
   var SEASON = { home: [2, 2], about: [2.05, 2.35], values: [2.38, 2.55], land: [2.58, 2.9], nature: [2.95, 3.98], year: [4, 7.66], harvest: [7.7, 7.92], gallery: [7.96, 8], numbers: [8, 8], contact: [8, 8], rest: [8, 8] };
   var POSE_D = { home: [.5, .9, .94, 1], about: [.5, .9, .94, 0], values: [.88, .97, .62, 0], land: [.8, .96, .7, 0], nature: [.35, .93, .92, 0], year: [.35, .93, .92, 1], harvest: [.95, .97, .45, 0], gallery: [.9, .97, .5, 0], numbers: [.84, .95, .74, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
-  var POSE_M = { home: [.5, .755, .74, 1], about: [.5, .755, .74, 0], values: [.5, .95, .8, 0], land: [.5, .95, .7, 0], nature: [.5, .56, .52, 0], year: [.5, .56, .52, 1], harvest: [.8, .97, .5, 0], gallery: [.5, .97, .5, 0], numbers: [.55, .95, .8, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
+  var POSE_M = { home: [.5, .7, .66, 1], about: [.5, .7, .66, 0], values: [.5, .95, .8, 0], land: [.5, .95, .7, 0], nature: [.5, .56, .52, 0], year: [.5, .56, .52, 1], harvest: [.8, .97, .5, 0], gallery: [.5, .97, .5, 0], numbers: [.55, .95, .8, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
 
   function measure() {
     VH = window.innerHeight; VW = window.innerWidth;
@@ -528,6 +528,7 @@
       .to(st, { seed: 1, duration: 1.6, ease: "none" }, .4)
       .to(st, { G: 1, duration: 4.6, ease: "power2.inOut" }, 2.0)
       .fromTo(".hero-line .w > span", { yPercent: 108, y: 0 }, { yPercent: 0, y: 0, duration: 1.3, ease: "expo.out", stagger: .04, onComplete: function () { $(".hero-line").classList.add("done"); } }, 3.6)
+      .from(".def", { opacity: 0, y: 10, duration: 1.2, ease: "expo.out" }, 3.4)
       .from(".scroll-hint", { opacity: 0, duration: 1 }, 5.2);
   }
 
