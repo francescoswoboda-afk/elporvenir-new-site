@@ -35,7 +35,6 @@
   /* ---------- controls duplicated into the mobile drawer ---------- */
   var drawerFoot = $(".drawer-foot");
   drawerFoot.appendChild($(".langs").cloneNode(true));
-  drawerFoot.appendChild($(".sound").cloneNode(true));
 
   /* ---------- i18n ---------- */
   var lang = "en";
@@ -64,7 +63,6 @@
     $$("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lang === lang)); });
     root.lang = lang === "pt" ? "pt-BR" : lang;
     doc.title = tr("meta.title");
-    soundLabel();
     if (map) map.relabel(tr);
     $$(".split").forEach(function (el) { if (el.dataset.seen || !animated) el.classList.add("done"); });
     $$(".count[data-to]").forEach(function (el) { el.textContent = num(el.dataset.seen || !animated ? +el.dataset.to : 0); });
@@ -180,7 +178,7 @@
   var lastSky = "";
 
   /* ---------- per-frame update ---------- */
-  var pose = [0, 0, 0, 0], lastT = 0, seasonForSound = -1, activeId = "", yearArts = $$(".season"), track = $(".track"), trackW = 0;
+  var pose = [0, 0, 0, 0], lastT = 0, activeId = "", yearArts = $$(".season"), track = $(".track"), trackW = 0;
   var dialNeedle = $(".dial-needle"), yearBar = $(".year-progress i");
   function update(time) {
     var t = time, dt = Math.min(.05, lastT ? t - lastT : .016); lastT = t;
@@ -253,8 +251,6 @@
     // active nav
     var cur = currentSection();
     if (cur !== activeId) setActive(cur);
-    // sound follows the season
-    if (Math.abs(st.s - seasonForSound) > .05) { seasonForSound = st.s; sound.setSeason(st.s); }
     // cursor
     moveCursor();
     // draw
@@ -316,14 +312,9 @@
     if (d > 70) closeDrawer();
   });
 
-  /* ---------- language + sound controls ---------- */
-  var sound = new window.EPSound();
-  function soundLabel() {
-    $$(".sound").forEach(function (b) { b.setAttribute("aria-pressed", String(sound.on)); var l = b.querySelector(".sound-label"); if (l) l.textContent = tr(sound.on ? "ui.sound.on" : "ui.sound.off"); });
-  }
+  /* ---------- language controls ---------- */
   doc.addEventListener("click", function (e) {
     var lb = e.target.closest("[data-lang]"); if (lb) { setLang(lb.dataset.lang); return; }
-    var sb = e.target.closest(".sound"); if (sb) { sound.toggle(); sound.setSeason(st.s); soundLabel(); return; }
     var cp = e.target.closest(".copy"); if (cp) {
       var txt = cp.dataset.copy;
       var pr; try { pr = navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject(); } catch (er) { pr = Promise.reject(er); }
@@ -348,14 +339,13 @@
     if (e.target.closest("a,button,input,textarea,label,form,.dock,.drawer,.tab,.viewer,.legal-dlg,.wall")) return;
     var cy = canvasY(e.clientY);
     if (tree.catchAt(e.clientX, cy)) {
-      sound.crack();
       toast(tr(tree.caught === 1 ? "ui.caught" : "ui.caughtN").replace("{n}", num(tree.caught)));
       if (navigator.vibrate) try { navigator.vibrate(12); } catch (er) {}
       return;
     }
     if (tree.trunkAt(e.clientX, cy)) {
       var now = performance.now(); trunkHits.push(now); trunkHits = trunkHits.filter(function (h) { return now - h < 1400; });
-      if (trunkHits.length >= 3) { trunkHits = []; tree.callBird(); sound.chirpHello(); toast(tr("ui.hummingbird")); }
+      if (trunkHits.length >= 3) { trunkHits = []; tree.callBird(); toast(tr("ui.hummingbird")); }
     }
   });
   var typed = "";

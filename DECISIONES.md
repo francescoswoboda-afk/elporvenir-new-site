@@ -94,7 +94,7 @@ Dibujado en canvas 2D, de forma procedural, con una semilla fija para que siempr
   - grano de papel generado en código (sin modos de fusión, que son caros);
   - cursor propio que cambia sobre enlaces, sobre la pared de la galería ("Arrastra") y sobre una nuez que cae (✦);
   - brillo de luz según la hora del día.
-- **Sonido (apagado por defecto):** todo sintetizado con Web Audio, sin muestras.
+- **Sonido:** eliminado en noviembre de 2026 (antes: ambiente sintetizado con Web Audio, apagado por defecto).
   - viento: ruido rosa por un filtro paso banda que se mueve lentamente;
   - susurro de hojas: ruido agudo que solo suena cuando hay hojas;
   - pájaros: barridos de frecuencia, más frecuentes en primavera y verano;

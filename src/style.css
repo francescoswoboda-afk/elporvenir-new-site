@@ -123,21 +123,13 @@ body.dusk .controls { background: rgba(18,22,28,.5); }
 .brand span { font: 500 21px/1 var(--display); letter-spacing: -.01em; font-variation-settings: "SOFT" 80; }
 .controls { position: fixed; z-index: 80; left: var(--pad); bottom: 20px; display: flex; gap: 14px; align-items: center; font: 600 11px/1 var(--ui); letter-spacing: .14em; }
 .langs { display: flex; gap: 2px; }
-.langs button, .sound {
+.langs button {
   background: none; border: 0; padding: 9px 9px; cursor: pointer; color: var(--ink-2); border-radius: 99px; letter-spacing: inherit; font: inherit;
   transition: color .3s, background .3s;
 }
 .langs button[aria-pressed="true"] { color: var(--ink); background: rgba(31,38,24,.08); }
-.langs button:hover, .sound:hover { color: var(--ink); }
-.sound { display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-.sound-bars { display: flex; gap: 2px; align-items: flex-end; height: 12px; }
-.sound-bars i { width: 2px; height: 3px; background: currentColor; border-radius: 1px; transition: height .3s; }
-.sound[aria-pressed="true"] .sound-bars i { animation: bars 1s ease-in-out infinite; }
-.sound[aria-pressed="true"] .sound-bars i:nth-child(2) { animation-delay: -.3s; }
-.sound[aria-pressed="true"] .sound-bars i:nth-child(3) { animation-delay: -.6s; }
-.sound[aria-pressed="true"] .sound-bars i:nth-child(4) { animation-delay: -.15s; }
-@keyframes bars { 50% { height: 12px; } }
-body.dusk .brand, body.dusk .controls, body.dusk .langs button, body.dusk .sound { color: #e9e3d2; }
+.langs button:hover { color: var(--ink); }
+body.dusk .brand, body.dusk .controls, body.dusk .langs button { color: #e9e3d2; }
 body.dusk .langs button[aria-pressed="true"] { background: rgba(255,255,255,.12); }
 
 /* ---------- dock navigation (right edge, macOS Dock) ---------- */
@@ -505,7 +497,7 @@ body.dusk .c-dot { background: #f1ead8; } body.dusk .c-ring { border-color: #f1e
 .static .dial, .static .year-progress { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .grain, .scroll-line, .sound-bars i, .viewer-fig img { animation: none !important; }
+  .grain, .scroll-line, .viewer-fig img { animation: none !important; }
   .scene * { animation: none !important; }}
 
 /* ============ mobile ============ */
@@ -514,9 +506,7 @@ body.dusk .c-dot { background: #f1ead8; } body.dusk .c-ring { border-color: #f1e
   .dock { display: none; }
   .brand { top: 16px; }
   .brand span { font-size: 19px; }
-  .controls { bottom: 14px; gap: 6px; }
-  .controls .sound-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .tab {
+  .controls { bottom: 14px; gap: 6px; }  .tab {
     display: flex; position: fixed; z-index: 86; right: 0; top: 58%; transform: translateY(-50%);
     flex-direction: column; align-items: center; gap: 10px; padding: 16px 7px 16px 9px;
     background: #0f130e; color: #fff; border: 0; border-radius: 14px 0 0 14px; cursor: pointer;
@@ -537,10 +527,8 @@ body.dusk .c-dot { background: #f1ead8; } body.dusk .c-ring { border-color: #f1e
   .drawer a.on, .drawer a:active { color: var(--gold); font-style: italic; }
   .drawer a.on b { color: var(--gold); }
   .drawer-foot { margin-top: 26px; display: flex; gap: 8px; align-items: center; font: 600 11px/1 var(--ui); letter-spacing: .14em; }
-  .drawer-foot .langs button, .drawer-foot .sound { color: rgba(255,255,255,.7); }
-  .drawer-foot .langs button[aria-pressed="true"] { color: #fff; background: rgba(255,255,255,.12); }
-  .drawer-foot .sound-label { display: inline; }
-  .drawer-scrim { display: block; position: fixed; inset: 0; z-index: 94; background: rgba(10,12,10,.45); opacity: 0; transition: opacity .5s; }
+  .drawer-foot .langs button { color: rgba(255,255,255,.7); }
+  .drawer-foot .langs button[aria-pressed="true"] { color: #fff; background: rgba(255,255,255,.12); }  .drawer-scrim { display: block; position: fixed; inset: 0; z-index: 94; background: rgba(10,12,10,.45); opacity: 0; transition: opacity .5s; }
   .drawer-scrim.open { opacity: 1; }
   .drawer-scrim[hidden] { display: none; }
 

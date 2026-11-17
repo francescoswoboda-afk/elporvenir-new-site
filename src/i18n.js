@@ -4,7 +4,6 @@ window.EP_I18N = {
   en: {
     "meta.title": "El Porvenir Farm · A pecan orchard in southern Brazil",
     "skip": "Skip to content",
-    "ui.sound.on": "Sound on", "ui.sound.off": "Sound off",
     "ui.menu": "Menu", "ui.close": "Close",
     "ui.caught": "{n} pecan caught", "ui.caughtN": "{n} pecans caught",
     "ui.hummingbird": "A beija-flor came to visit. You found the hummingbird.",
@@ -118,7 +117,6 @@ window.EP_I18N = {
   pt: {
     "meta.title": "El Porvenir Farm · Um pomar de nozes-pecã no sul do Brasil",
     "skip": "Pular para o conteúdo",
-    "ui.sound.on": "Som ligado", "ui.sound.off": "Som desligado",
     "ui.menu": "Menu", "ui.close": "Fechar",
     "ui.caught": "{n} noz apanhada", "ui.caughtN": "{n} nozes apanhadas",
     "ui.hummingbird": "Um beija-flor veio visitar. Você encontrou o beija-flor.",
@@ -232,7 +230,6 @@ window.EP_I18N = {
   es: {
     "meta.title": "El Porvenir Farm · Un huerto de pecanas en el sur de Brasil",
     "skip": "Ir al contenido",
-    "ui.sound.on": "Sonido activado", "ui.sound.off": "Sonido desactivado",
     "ui.menu": "Menú", "ui.close": "Cerrar",
     "ui.caught": "{n} pecana atrapada", "ui.caughtN": "{n} pecanas atrapadas",
     "ui.hummingbird": "Vino a visitarnos un picaflor. Encontraste el colibrí.",

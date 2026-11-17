@@ -37,7 +37,7 @@ html = html.replace('src="{{IMG_ORCHARD_S}}"', f'src="{blank}" data-img="orchard
 html = html.replace("{{IMG_TREE}}", tree_png).replace("{{IMG_LOGO}}", logo_png)
 
 js_img = "window.EP_IMG=" + "{" + ",".join(f'"{k}":"{v}"' for k, v in imgs.items()) + "};\n"
-js = js_img + "\n".join((SRC / f).read_text() for f in ["i18n.js", "tree.js", "map.js", "audio.js", "main.js"])
+js = js_img + "\n".join((SRC / f).read_text() for f in ["i18n.js", "tree.js", "map.js", "main.js"])
 
 html = html.replace("/*CSS*/", css).replace("/*JS*/", js)
 assert "{{" not in html, re.findall(r"\{\{[A-Z_]+\}\}", html)
