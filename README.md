@@ -24,3 +24,12 @@ A single-page showcase site for El Porvenir Farm, a pecan orchard in Rio Grande 
 3. Open `index.html` in a browser to check.
 
 Tip: in VS Code, the "Live Server" extension shows `index.html` and reloads it on save.
+
+## Design skills for Claude Code
+
+`.claude/skills/` contains two open-source design skill packs, so Claude Code in VS Code uses them when working on this site:
+
+- **Impeccable** by Paul Bakaus (`impeccable`), Apache 2.0, from github.com/pbakaus/impeccable. Type `/impeccable` followed by a command, for example `/impeccable critique`, `/impeccable audit`, `/impeccable polish`, `/impeccable typeset` or `/impeccable animate`.
+- **Emil Kowalski's design engineering skills** (`emil-design-eng`, `animate`, `review-animations`, `improve-animations` and others), MIT, from github.com/emilkowalski/skill. Ask for example "review the animations with review-animations" or use `/emil-design-eng`.
+
+Impeccable's automatic hooks (which download and run its checker after every edit) are deliberately not enabled. Its scripts only run if you ask Claude to use them.
