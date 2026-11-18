@@ -93,11 +93,11 @@
   var lenis = null;
   function lockScroll(on) { root.style.overflow = on ? "hidden" : ""; }
   var lastY = window.pageYOffset, scrollVel = 0;
-  // From the hero to "values" the tree rides up with the page. Where the browser supports
+  // From the hero to "the land" the tree rides up with the page. Where the browser supports
   // scroll-driven animations, it moves the canvas itself so the tree never lags the text.
   var cssLift = !!(window.CSS && CSS.supports && CSS.supports("animation-timeline: scroll()"));
   if (cssLift) root.classList.add("lift");
-  function liftNow(y) { return SEC.values && y < SEC.values.top ? Math.max(0, y) : 0; }
+  function liftNow(y) { return SEC.land && y < SEC.land.top ? Math.max(0, y) : 0; }
   function canvasY(cy) { return cssLift ? cy + liftNow(scrollY()) : cy; }
   function scrollY() { return lenis ? lenis.scroll : window.pageYOffset; }
   function jump(y) { if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y); }
@@ -112,27 +112,27 @@
   function sectionTop(el) { var r = el.getBoundingClientRect(); return r.top + scrollY(); }
 
   /* ---------- layout / keyframes ---------- */
-  var IDS = ["home", "about", "values", "land", "nature", "year", "harvest", "gallery", "numbers", "contact", "rest"];
-  var NAV = ["home", "about", "land", "year", "harvest", "gallery", "numbers", "contact"];
-  var NAV_OF = { values: "about", nature: "land", rest: "contact" };
+  var IDS = ["home", "about", "land", "nature", "values", "year", "harvest", "gallery", "numbers", "contact", "rest"];
+  var NAV = ["home", "about", "land", "year", "harvest", "numbers", "contact"];
+  var NAV_OF = { values: "land", nature: "land", gallery: "harvest", rest: "contact" };
   var SEC = {}, VH = 0, VW = 0, MAXY = 1, keysPose = [], keysS = [];
   // season at the start and end of each section; tree pose [x, base, H, alpha] for desktop and mobile
-  var SEASON = { home: [2, 2], about: [2.05, 2.35], values: [2.38, 2.55], land: [2.58, 2.9], nature: [2.95, 3.98], year: [4, 7.66], harvest: [7.7, 7.92], gallery: [7.96, 8], numbers: [8, 8], contact: [8, 8], rest: [8, 8] };
-  var POSE_D = { home: [.5, .9, .94, 1], about: [.5, .9, .94, 0], values: [.88, .97, .62, 0], land: [.8, .96, .7, 0], nature: [.35, .93, .92, 0], year: [.35, .93, .92, 1], harvest: [.95, .97, .45, 0], gallery: [.9, .97, .5, 0], numbers: [.84, .95, .74, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
-  var POSE_M = { home: [.5, .7, .66, 1], about: [.5, .7, .66, 0], values: [.5, .95, .8, 0], land: [.5, .95, .7, 0], nature: [.5, .56, .52, 0], year: [.5, .56, .52, 1], harvest: [.8, .97, .5, 0], gallery: [.5, .97, .5, 0], numbers: [.55, .95, .8, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
+  var SEASON = { home: [2, 2], about: [2.05, 2.35], land: [2.4, 2.9], nature: [2.95, 3.97], values: [3.975, 3.99], year: [4, 7.66], harvest: [7.7, 7.92], gallery: [7.96, 8], numbers: [8, 8], contact: [8, 8], rest: [8, 8] };
+  var POSE_D = { home: [.5, .9, .94, 1], about: [.5, .9, .94, 0], land: [.8, .96, .7, 0], nature: [.8, .96, .7, 0], values: [.35, .93, .92, 0], year: [.35, .93, .92, 1], harvest: [.95, .97, .45, 0], gallery: [.9, .97, .5, 0], numbers: [.84, .95, .74, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
+  var POSE_M = { home: [.5, .7, .66, 1], about: [.5, .7, .66, 0], land: [.5, .95, .7, 0], nature: [.5, .95, .7, 0], values: [.5, .56, .52, 0], year: [.5, .56, .52, 1], harvest: [.8, .97, .5, 0], gallery: [.5, .97, .5, 0], numbers: [.55, .95, .8, 0], contact: [.5, .95, .8, 0], rest: [.5, .93, .8, 1] };
 
   function measure() {
     VH = window.innerHeight; VW = window.innerWidth;
     IDS.forEach(function (id) { var el = doc.getElementById(id); SEC[id] = { el: el, top: sectionTop(el), h: el.offsetHeight }; });
     MAXY = Math.max(1, doc.documentElement.scrollHeight - VH);
-    root.style.setProperty("--lift", Math.max(1, SEC.values.top) + "px");
+    root.style.setProperty("--lift", Math.max(1, SEC.land.top) + "px");
     var POSE = isMobile() ? POSE_M : POSE_D;
     keysPose = []; keysS = [];
     IDS.forEach(function (id, i) {
       var s = SEC[id], a = s.top - VH * .35, b = Math.max(a + 1, s.top + s.h - VH * .65);
       if (i === 0) { a = -1e5; b = Math.max(1, s.h * .35); }
       // the tree's return for winter: a slow fade (about a screen's worth of scrolling)
-      if (id === "nature") b = Math.max(a + 1, SEC.year.top - VH * .85);
+      if (IDS[i + 1] === "year") b = Math.max(a + 1, SEC.year.top - VH * .85);
       if (id === "year") a = s.top + VH * .25;
       keysPose.push([a, POSE[id]], [b, POSE[id]]);
       var sa = s.top, sb = Math.max(sa + 1, s.top + s.h - VH);
@@ -457,16 +457,15 @@
       if (el.classList.contains("reveal")) { el.classList.add("in"); io.unobserve(el); }
       if (el.classList.contains("split") && animated && !el.dataset.seen) {
         el.dataset.seen = "1";
-        gsap.fromTo(el.querySelectorAll(".w > span"), { yPercent: 108, y: 0 }, { yPercent: 0, y: 0, duration: 1.25, ease: "expo.out", stagger: .045, onComplete: function () { el.classList.add("done"); } });
-        gsap.fromTo(el, { "--wght": 220 }, { "--wght": 360, duration: 1.8, ease: "power2.out" });
+        // words rise into place; no weight tween (it re-laid out the text every frame)
+        gsap.fromTo(el.querySelectorAll(".w > span"), { yPercent: 108, y: 0 }, { yPercent: 0, y: 0, duration: .9, ease: "expo.out", stagger: .03, onComplete: function () { el.classList.add("done"); } });
         io.unobserve(el);
       }
       if (el.classList.contains("count") && el.dataset.to && !el.dataset.seen) {
         el.dataset.seen = "1"; var to = +el.dataset.to;
         if (!animated) { el.textContent = num(to); return; }
         var o = { v: 0 };
-        gsap.to(o, { v: to, duration: 2.4, ease: "expo.out", onUpdate: function () { el.textContent = num(Math.round(o.v)); } });
-        gsap.fromTo(el, { "--wght": 200 }, { "--wght": 320, duration: 2.4, ease: "expo.out" });
+        gsap.to(o, { v: to, duration: 1.4, ease: "expo.out", onUpdate: function () { el.textContent = num(Math.round(o.v)); } });
         io.unobserve(el);
       }
     });
@@ -521,15 +520,19 @@
     wm.innerHTML = wm.textContent.split("").map(function (c) { return '<span class="ch">' + c + "</span>"; }).join("");
     $(".hero-line").dataset.seen = "1";
     if (!animated) { $(".hero-line").classList.add("done"); return; }
-    var tl = gsap.timeline({ delay: .2 });
-    tl.from(".wordmark .ch", { yPercent: 70, opacity: 0, duration: 1.6, ease: "expo.out", stagger: .06 }, 0)
-      .from(".wm-el", { opacity: 0, x: -20, duration: 1.4, ease: "expo.out" }, .3)
-      .fromTo(".wordmark", { "--wght": 200 }, { "--wght": 300, duration: 3, ease: "power1.out" }, 0)
-      .to(st, { seed: 1, duration: 1.6, ease: "none" }, .4)
-      .to(st, { G: 1, duration: 4.6, ease: "power2.inOut" }, 2.0)
-      .fromTo(".hero-line .w > span", { yPercent: 108, y: 0 }, { yPercent: 0, y: 0, duration: 1.3, ease: "expo.out", stagger: .04, onComplete: function () { $(".hero-line").classList.add("done"); } }, 3.6)
-      .from(".def", { opacity: 0, y: 10, duration: 1.2, ease: "expo.out" }, 3.4)
-      .from(".scroll-hint", { opacity: 0, duration: 1 }, 5.2);
+    // The words are readable within ~2 s; the tree keeps growing behind them. On a repeat visit
+    // in the same session the intro is skipped: a first-visit delight shouldn't be a toll.
+    var tl = gsap.timeline({ delay: .15 });
+    tl.from(".wordmark .ch", { yPercent: 70, opacity: 0, duration: 1.1, ease: "expo.out", stagger: .045 }, 0)
+      .from(".wm-el", { opacity: 0, x: -16, duration: 1, ease: "expo.out" }, .2)
+      .to(st, { seed: 1, duration: 1.1, ease: "none" }, .25)
+      .to(st, { G: 1, duration: 3.6, ease: "power2.inOut" }, 1.2)
+      .from(".def", { opacity: 0, y: 8, duration: .8, ease: "expo.out" }, 1.3)
+      .fromTo(".hero-line .w > span", { yPercent: 108, y: 0 }, { yPercent: 0, y: 0, duration: .9, ease: "expo.out", stagger: .03, onComplete: function () { $(".hero-line").classList.add("done"); } }, 1.45)
+      .from(".scroll-hint", { opacity: 0, duration: .6 }, 2.4);
+    var seen = false;
+    try { seen = sessionStorage.getItem("ep-intro") === "1"; sessionStorage.setItem("ep-intro", "1"); } catch (e) {}
+    if (seen) tl.progress(1);
   }
 
   /* ---------- boot ---------- */

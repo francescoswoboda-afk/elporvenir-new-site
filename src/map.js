@@ -64,7 +64,8 @@
     this.stateLabel = this.text(X(-56.4), Y(-28.7), "Rio Grande do Sul", .33, 1);
     this.oceanLabel = this.text(X(-49.5), Y(-33.2), "", .28, 1, "ocean");
     this.oceanLabel0 = this.text(X(-38), Y(-36), "", 1.5, 0, "ocean");
-    this.farmLabel = this.text(X(FARM[0]) + .025, Y(FARM[1]) - .025, "Monte Alverne", .024, 2);
+    // no "Monte Alverne" label at the pin: the step heading beside the map already names it
+    this.farmLabel = this.text(X(FARM[0]) + .025, Y(FARM[1]) - .025, "", .024, 2);
     // centred just under the pin, clear of the step text on the right
     this.approxLabel = this.text(X(FARM[0]), Y(FARM[1]) + .011, "", .0042, 3, "approx");
     this.approxLabel.setAttribute("text-anchor", "middle");
@@ -122,6 +123,8 @@
       // labels grow with the zoom; fade them out before they turn into giant ghost text
       var px = L.size * this.hPx / hh;
       o *= Math.max(0, Math.min(1, (40 - px) / 12));
+      // ...and while they are still too small to read
+      o *= Math.max(0, Math.min(1, (px - 10.5) / 3));
       // hidden labels leave rendering entirely: at deep zoom their glyphs would be
       // hundreds of thousands of pixels tall, which makes Chrome drop frames
       L.el.style.opacity = o.toFixed(3); L.el.style.display = o > .001 ? "" : "none";

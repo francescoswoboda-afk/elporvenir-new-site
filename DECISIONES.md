@@ -168,3 +168,12 @@ Las costas del mapa están simplificadas a mano: es una ilustración, no cartogr
 ## 11. Tiempo
 
 Unos **40 minutos** para la versión inicial (de 11:16 a 11:56 del 17 de noviembre de 2026) y unos **25 minutos** para la pasada 5 (de 12:31 a 12:56), más el tiempo previo de la primera propuesta. No pude crear el repositorio nuevo `elporvenir-new-site` en GitHub (el formulario quedó relleno, pero la creación necesita tu clic), así que el código vive en la rama `v2` del repositorio actual.
+
+## Revisión de diseño (noviembre de 2026, crítica "impeccable" + revisión de movimiento estilo Emil Kowalski)
+
+- **Cabecera:** marca a la izquierda; "Contacto" e idiomas arriba a la derecha. En móvil, el botón "Menú" vive en la cabecera (ya no tapa el texto en el borde derecho). Una franja de papel bajo la cabecera evita que los títulos choquen con el logo.
+- **Orden:** "Lo que defendemos" va ahora después de "Trabajando con la naturaleza", para que los valores lleguen después de las pruebas. Se quitó el eslogan final.
+- **Sin etiquetas numeradas** ("02 Nuestra historia"…) encima de los títulos ni números en el menú. La galería (2 fotos) sale del menú hasta que haya más.
+- **Invitación** "Ven a ver los árboles" al final del recorrido del mapa, sobre la foto aérea.
+- **Privacidad / Aviso legal** solo en modo borrador (?draft) hasta tener el texto real.
+- **Movimiento:** intro más corta (texto legible en ~2 s) y sin repetir en la misma sesión; apariciones más rápidas; sin animar el peso de la letra; hovers solo con ratón; respuesta al pulsar en todos los botones.

@@ -27,8 +27,9 @@
   <span>El Porvenir</span>
 </a>
 
-<!-- language -->
+<!-- header right: the way to get in touch, then language -->
 <div class="controls">
+  <a class="hdr-link" href="#contact" data-nav="contact" data-t="nav.contact">Contact</a>
   <div class="langs" role="group" aria-label="Language / Idioma">
     <button type="button" data-lang="en" lang="en" aria-pressed="true">EN</button>
     <button type="button" data-lang="pt" lang="pt" aria-pressed="false">PT</button>
@@ -38,16 +39,15 @@
 
 <!-- right dock navigation -->
 <nav class="dock" aria-label="Sections">
-  <div class="dock-strip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="dock-strip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <ul class="dock-list">
-    <li><a href="#home" data-nav="home"><b>01</b><span data-t="nav.home">Home</span></a></li>
-    <li><a href="#about" data-nav="about"><b>02</b><span data-t="nav.about">Our story</span></a></li>
-    <li><a href="#land" data-nav="land"><b>03</b><span data-t="nav.land">The land</span></a></li>
-    <li><a href="#year" data-nav="year"><b>04</b><span data-t="nav.year">The orchard year</span></a></li>
-    <li><a href="#harvest" data-nav="harvest"><b>05</b><span data-t="nav.harvest">From tree to nut</span></a></li>
-    <li><a href="#gallery" data-nav="gallery"><b>06</b><span data-t="nav.gallery">Gallery</span></a></li>
-    <li><a href="#numbers" data-nav="numbers"><b>07</b><span data-t="nav.numbers">In numbers</span></a></li>
-    <li><a href="#contact" data-nav="contact"><b>08</b><span data-t="nav.contact">Contact</span></a></li>
+    <li><a href="#home" data-nav="home"><span data-t="nav.home">Home</span></a></li>
+    <li><a href="#about" data-nav="about"><span data-t="nav.about">Our story</span></a></li>
+    <li><a href="#land" data-nav="land"><span data-t="nav.land">The land</span></a></li>
+    <li><a href="#year" data-nav="year"><span data-t="nav.year">The orchard year</span></a></li>
+    <li><a href="#harvest" data-nav="harvest"><span data-t="nav.harvest">From tree to nut</span></a></li>
+    <li><a href="#numbers" data-nav="numbers"><span data-t="nav.numbers">In numbers</span></a></li>
+    <li><a href="#contact" data-nav="contact"><span data-t="nav.contact">Contact</span></a></li>
   </ul>
 </nav>
 <button type="button" class="tab" aria-expanded="false" aria-controls="drawer">
@@ -57,14 +57,13 @@
 <div class="drawer-scrim" hidden></div>
 <nav class="drawer" id="drawer" aria-label="Sections" hidden>
   <ul>
-    <li><a href="#home" data-nav="home"><b>01</b><span data-t="nav.home">Home</span></a></li>
-    <li><a href="#about" data-nav="about"><b>02</b><span data-t="nav.about">Our story</span></a></li>
-    <li><a href="#land" data-nav="land"><b>03</b><span data-t="nav.land">The land</span></a></li>
-    <li><a href="#year" data-nav="year"><b>04</b><span data-t="nav.year">The orchard year</span></a></li>
-    <li><a href="#harvest" data-nav="harvest"><b>05</b><span data-t="nav.harvest">From tree to nut</span></a></li>
-    <li><a href="#gallery" data-nav="gallery"><b>06</b><span data-t="nav.gallery">Gallery</span></a></li>
-    <li><a href="#numbers" data-nav="numbers"><b>07</b><span data-t="nav.numbers">In numbers</span></a></li>
-    <li><a href="#contact" data-nav="contact"><b>08</b><span data-t="nav.contact">Contact</span></a></li>
+    <li><a href="#home" data-nav="home"><span data-t="nav.home">Home</span></a></li>
+    <li><a href="#about" data-nav="about"><span data-t="nav.about">Our story</span></a></li>
+    <li><a href="#land" data-nav="land"><span data-t="nav.land">The land</span></a></li>
+    <li><a href="#year" data-nav="year"><span data-t="nav.year">The orchard year</span></a></li>
+    <li><a href="#harvest" data-nav="harvest"><span data-t="nav.harvest">From tree to nut</span></a></li>
+    <li><a href="#numbers" data-nav="numbers"><span data-t="nav.numbers">In numbers</span></a></li>
+    <li><a href="#contact" data-nav="contact"><span data-t="nav.contact">Contact</span></a></li>
   </ul>
   <div class="drawer-foot"></div>
 </nav>
@@ -86,7 +85,6 @@
   <!-- 02 OUR STORY -->
   <section class="sec about" id="about" data-sec="about">
     <div class="col">
-      <p class="label"><span class="n">02</span> <span data-t="about.kicker">Our story</span></p>
       <h2 class="h1 split" data-t="about.title">A hillside and a great deal of patience.</h2>
       <p class="body lead reveal" data-t="about.p1"></p>
       <p class="body reveal" data-t="about.p2"></p>
@@ -98,25 +96,6 @@
   </section>
 
 
-  <!-- 02b WHAT WE STAND FOR -->
-  <section class="sec values" id="values" data-sec="values">
-    <div class="col wide">
-      <p class="label"><span class="n">02</span> <span data-t="values.kicker">What we stand for</span></p>
-      <div class="mv">
-        <figure class="mv-item reveal"><figcaption class="label" data-t="values.mission.t">Our mission</figcaption><blockquote data-t="values.mission"></blockquote></figure>
-        <figure class="mv-item reveal"><figcaption class="label" data-t="values.vision.t">Our vision</figcaption><blockquote data-t="values.vision"></blockquote></figure>
-      </div>
-      <h2 class="h2 split values-title" data-t="values.title">Our values</h2>
-      <ol class="vlist">
-        <li class="reveal"><span class="v-n">i</span><h3 data-t="values.1.t"></h3><p data-t="values.1.p"></p></li>
-        <li class="reveal"><span class="v-n">ii</span><h3 data-t="values.2.t"></h3><p data-t="values.2.p"></p></li>
-        <li class="reveal"><span class="v-n">iii</span><h3 data-t="values.3.t"></h3><p data-t="values.3.p"></p></li>
-        <li class="reveal"><span class="v-n">iv</span><h3 data-t="values.4.t"></h3><p data-t="values.4.p"></p></li>
-      </ol>
-      <p class="big-quote split" data-t="values.quote">Sustainability is not just a goal. It's the way we farm, every day.</p>
-    </div>
-  </section>
-
   <!-- 03 THE LAND -->
   <section class="sec land" id="land" data-sec="land">
     <div class="sticky land-stage">
@@ -127,13 +106,12 @@
           <figcaption data-t="land.photo"></figcaption>
         </figure>
       </div>
-      <p class="label land-label"><span class="n">03</span> <span data-t="land.kicker">The land</span></p>
     </div>
     <div class="land-steps">
       <div class="step" data-step="0"><div class="step-in"><h2 class="h2" data-t="land.s1t">South America.</h2><p data-t="land.s1"></p></div></div>
       <div class="step" data-step="1"><div class="step-in"><h2 class="h2" data-t="land.s2t">Rio Grande do Sul.</h2><p data-t="land.s2"></p></div></div>
       <div class="step" data-step="2"><div class="step-in"><h2 class="h2" data-t="land.s3t">Monte Alverne.</h2><p data-t="land.s3"></p></div></div>
-      <div class="step" data-step="3"><div class="step-in"><h2 class="h2" data-t="land.s4t">El Porvenir.</h2><p data-t="land.s4"></p></div></div>
+      <div class="step" data-step="3"><div class="step-in"><h2 class="h2" data-t="land.s4t">El Porvenir.</h2><p data-t="land.s4"></p><a class="step-cta" href="#contact" data-nav="contact"><span data-t="land.cta">Come and see the trees</span><span aria-hidden="true">→</span></a></div></div>
     </div>
   </section>
 
@@ -141,7 +119,6 @@
   <!-- 03b WORKING WITH NATURE -->
   <section class="sec nature" id="nature" data-sec="nature">
     <div class="col wide">
-      <p class="label"><span class="n">03</span> <span data-t="nature.kicker">Working with nature</span></p>
       <h2 class="h1 split" data-t="nature.title">Chosen, not cleared.</h2>
       <div class="nature-intro">
         <p class="lead reveal" data-t="nature.lead"></p>
@@ -188,11 +165,28 @@
     </div>
   </section>
 
+  <!-- 02b WHAT WE STAND FOR -->
+  <section class="sec values" id="values" data-sec="values">
+    <div class="col wide">
+      <h2 class="h2 values-head" data-t="values.kicker">What we stand for</h2>
+      <div class="mv">
+        <figure class="mv-item reveal"><figcaption class="label" data-t="values.mission.t">Our mission</figcaption><blockquote data-t="values.mission"></blockquote></figure>
+        <figure class="mv-item reveal"><figcaption class="label" data-t="values.vision.t">Our vision</figcaption><blockquote data-t="values.vision"></blockquote></figure>
+      </div>
+      <h3 class="h3 values-title" data-t="values.title">Our values</h3>
+      <ol class="vlist">
+        <li class="reveal"><span class="v-n">i</span><h3 data-t="values.1.t"></h3><p data-t="values.1.p"></p></li>
+        <li class="reveal"><span class="v-n">ii</span><h3 data-t="values.2.t"></h3><p data-t="values.2.p"></p></li>
+        <li class="reveal"><span class="v-n">iii</span><h3 data-t="values.3.t"></h3><p data-t="values.3.p"></p></li>
+        <li class="reveal"><span class="v-n">iv</span><h3 data-t="values.4.t"></h3><p data-t="values.4.p"></p></li>
+      </ol>
+    </div>
+  </section>
+
   <!-- 04 THE ORCHARD YEAR -->
   <section class="sec year" id="year" data-sec="year">
     <div class="sticky year-stage">
       <div class="year-head">
-        <p class="label"><span class="n">04</span> <span data-t="year.kicker">The orchard year</span></p>
         <h2 class="h3 year-title" data-t="year.title">One tree. Four seasons. A whole year of work.</h2>
       </div>
       <div class="dial" aria-hidden="true">
@@ -232,7 +226,6 @@
   <section class="sec harvest" id="harvest" data-sec="harvest">
     <div class="sticky harvest-stage">
       <div class="harvest-head">
-        <p class="label"><span class="n">05</span> <span data-t="harvest.kicker">From tree to nut</span></p>
         <h2 class="h2 split" data-t="harvest.title">What happens after the harvest.</h2>
       </div>
       <div class="track">
@@ -285,7 +278,6 @@
   <!-- 06 GALLERY -->
   <section class="sec gallery" id="gallery" data-sec="gallery">
     <div class="col wide">
-      <p class="label"><span class="n">06</span> <span data-t="gallery.kicker">Gallery</span></p>
       <h2 class="h1 split" data-t="gallery.title">The farm, as it is.</h2>
       <p class="hint" data-t="gallery.hint"></p>
     </div>
@@ -303,7 +295,6 @@
   <!-- 07 NUMBERS -->
   <section class="sec numbers" id="numbers" data-sec="numbers">
     <div class="col wide">
-      <p class="label"><span class="n">07</span> <span data-t="num.kicker">In numbers</span></p>
       <h2 class="h1 split" data-t="num.title">The farm, counted.</h2>
       <dl class="nums">
         <div class="num reveal"><dt data-t="num.trees"></dt><dd><span class="count" data-to="6000" data-sep="1">6,000</span></dd></div>
@@ -317,7 +308,6 @@
   <!-- 08 CONTACT -->
   <section class="sec contact" id="contact" data-sec="contact">
     <div class="col">
-      <p class="label"><span class="n">08</span> <span data-t="contact.kicker">Contact</span></p>
       <h2 class="h1 split" data-t="contact.title">Come and see the trees. Or just say hello.</h2>
       <dl class="contact-list">
         <div class="reveal"><dt data-t="contact.email">Email</dt><dd><a class="big-link" href="mailto:info@elporvenir.farm">info@elporvenir.farm</a> <mark class="ph" data-k="VERIFY"></mark> <button type="button" class="copy" data-copy="info@elporvenir.farm" data-t="ui.copy">Copy</button></dd></div>
@@ -350,10 +340,10 @@
       <img class="logo" src="{{IMG_LOGO}}" alt="El Porvenir Farm" width="200" height="121" />
       <p class="rest-line" data-t="foot.line"></p>
       <p class="legal">
-        <button type="button" class="legal-btn" data-t="foot.privacy">Privacy</button>
-        <span aria-hidden="true">·</span>
-        <button type="button" class="legal-btn" data-t="foot.imprint">Imprint</button>
-        <span aria-hidden="true">·</span>
+        <button type="button" class="legal-btn tbd-row" data-t="foot.privacy">Privacy</button>
+        <span class="tbd-row" aria-hidden="true">·</span>
+        <button type="button" class="legal-btn tbd-row" data-t="foot.imprint">Imprint</button>
+        <span class="tbd-row" aria-hidden="true">·</span>
         <span>© <span class="yr">2026</span> <span data-t="foot.rights">El Porvenir Farm</span></span>
       </p>
     </div>
