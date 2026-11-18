@@ -196,9 +196,9 @@ body.dusk .langs button[aria-pressed="true"] { background: rgba(255,255,255,.12)
 @keyframes drip { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
 
 /* 02 about */
-.about { padding: 22vh 0 18vh; }
+.about { padding: 13vh 0 7vh; }
 /* heading on the left, the story on the right: shorter lines, no empty half page */
-.about .col { max-width: 1440px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: clamp(40px, 7vw, 120px); align-items: start; }
+.about .col { max-width: 1440px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(40px, 7vw, 120px); align-items: start; }
 .about .col > .label { grid-column: 1 / -1; }
 .about .h1 { grid-column: 1; grid-row: 2 / span 3; margin: 0; font-size: var(--fs-h2); line-height: var(--lh-h2); letter-spacing: var(--ls-h2); }
 .about .body { grid-column: 2; margin: 0 0 22px; max-width: 34em; }
@@ -220,7 +220,7 @@ body.dusk .langs button[aria-pressed="true"] { background: rgba(255,255,255,.12)
 
 
 /* 02b values */
-.values { padding: 12vh 0 18vh; }
+.values { padding: 9vh 0 18vh; }
 .values .col { max-width: 1440px; }
 .mv { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 6vw, 110px); max-width: 100%; margin: 40px 0 clamp(70px, 9vw, 130px); }
 .mv-item { margin: 0; padding-top: 22px; border-top: 1px solid var(--ink); }
@@ -557,7 +557,7 @@ body.dusk .c-dot { background: #f1ead8; } body.dusk .c-ring { border-color: #f1e
   .about .col { grid-template-columns: 1fr; }
   .about .h1, .about .body, .about .name-note { grid-column: 1; grid-row: auto; }
   .about .h1 { margin-bottom: 28px; }
-  .about { padding: 16vh 0 10vh; }
+  .about { padding: 11vh 0 6vh; }
   .about .col { background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--paper) 88%, transparent) 14%, color-mix(in srgb, var(--paper) 88%, transparent) 90%, transparent); padding-top: 40px; padding-bottom: 40px; }
   .people { grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .person h3 { font-size: 16px; }
