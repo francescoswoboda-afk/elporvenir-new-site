@@ -33,3 +33,7 @@ Tip: in VS Code, the "Live Server" extension shows `index.html` and reloads it o
 - **Emil Kowalski's design engineering skills** (`emil-design-eng`, `animate`, `review-animations`, `improve-animations` and others), MIT, from github.com/emilkowalski/skill. Ask for example "review the animations with review-animations" or use `/emil-design-eng`.
 
 Impeccable's automatic hooks (which download and run its checker after every edit) are deliberately not enabled. Its scripts only run if you ask Claude to use them.
+
+### Site critic
+
+`.claude/skills/site-critic` is a project-specific, deliberately harsh reviewer. In Claude Code type `/site-critic` (or "critique the site"). It checks the site against the original brief (`brief.md`) and 11 areas (typography, contrast, motion, copy in three languages, accessibility, mobile, performance, code) and returns a ranked table of flaws with file locations and fixes. It doesn't change anything until you say which items to fix.
