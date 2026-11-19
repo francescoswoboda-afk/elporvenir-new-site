@@ -17,7 +17,7 @@ const TOPICS = {
 const LANGS = { en: "/", pt: "/pt/", es: "/es/" };
 
 // The site lives on www.elporvenir.farm (GitHub Pages) and posts the form here.
-const ALLOWED = ["https://www.elporvenir.farm", "https://elporvenir.farm", "https://elporvenir.francesco-swoboda.workers.dev"];
+export const ALLOWED = ["https://www.elporvenir.farm", "https://elporvenir.farm", "https://elporvenir.francesco-swoboda.workers.dev"];
 function siteOrigin(request) {
   const o = request.headers.get("Origin") || "";
   if (ALLOWED.includes(o)) return o;
