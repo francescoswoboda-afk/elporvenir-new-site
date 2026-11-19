@@ -29,7 +29,6 @@ def render(code):
         "PIC_HERO": picture("aerial", [640, 1024, 1600], t["alt_aerial"], "100vw", eager=True, rel=rel),
         "PIC_ROWS": picture("rows", [640, 1024, 1600], t["alt_rows"], "100vw", rel=rel),
         "PIC_LAKE": picture("aerial", [640, 1024, 1600], t["alt_lake"], "100vw", rel=rel),
-        "PIC_HOUSE": picture("house", [440], t["alt_house"], "(max-width: 900px) 100vw, 50vw", w=440, h=290, rel=rel),
     }
     langs = []
     for c, lab in (("en", "EN"), ("pt", "PT"), ("es", "ES")):
