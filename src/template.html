@@ -322,6 +322,31 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
   footer .fine{align-items:center;text-align:center}
 }
 @media (prefers-reduced-motion:reduce){.now .k::before{animation:none}}
+
+/* v2.1: critique fixes */
+.how{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:32px clamp(32px,6vw,80px);margin:clamp(80px,9vw,120px) 0 0;padding-top:24px;border-top:1px solid var(--line)}
+.how .values{grid-template-columns:repeat(2,minmax(0,1fr));margin:0}
+.how .values li{border-top:0;padding-top:0}
+.legend{margin:clamp(40px,5vw,56px) 0 0;padding:0 0 20px;border-top:0;border-bottom:1px solid var(--line)}
+.maps{margin-top:32px}
+.season .eb{min-height:3.3em}
+.s-nature h2{font-size:clamp(52px,7.6vw,112px);overflow-wrap:break-word;hyphens:auto}
+.now .k::before{animation-iteration-count:4}
+.m-sp{--c:#a3bd7f}.m-su{--c:#5f9e62}.season[data-s=sp] .rule{background:#a3bd7f}.season[data-s=su] .rule{background:#5f9e62}
+.links a{position:relative}
+.links a[aria-current]{color:var(--gold)}
+.links a[aria-current]::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--gold)}
+.note a{color:inherit;text-decoration:underline}
+.fld select:invalid{color:var(--muted)}
+@media (max-width:900px){
+  .how{grid-template-columns:1fr}
+  .season .eb{min-height:0}
+  .maps figure{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  .maps .map{width:auto;height:220px;max-width:none}
+  .maps figcaption{position:sticky;left:0}
+  .hero::after{background:linear-gradient(180deg,rgba(17,21,15,.6) 0%,rgba(17,21,15,.1) 22%,rgba(17,21,15,.45) 42%,rgba(17,21,15,.9) 62%,rgba(17,21,15,.98) 100%)}
+}
+@media (max-width:560px){.how .values{grid-template-columns:1fr}}
 </style>
 <script>document.documentElement.className+=" js"</script>
 </head>
@@ -432,18 +457,19 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
       <div class="bar" aria-hidden="true"><i></i></div>
       <p class="lab"><span><b>[[r_o]]</b></span><span>[[r_r]]</span></p>
     </div>
+    <ul class="legend"><li><span class="sw o"></span>[[leg_o]]</li><li><span class="sw r"></span>[[leg_r]]</li><li><span class="sw b"></span>[[leg_b]]</li></ul>
     <div class="maps">
       <figure class="mapfig" data-in>[[MAP_F]]<figcaption><strong>[[fig_l]]</strong><span>[[fig_s]]</span></figcaption></figure>
       <figure class="mapfig" data-in>[[MAP_N]]<figcaption><strong>[[nog_l]]</strong><span>[[nog_s]]</span></figcaption></figure>
     </div>
-    <ul class="legend"><li><span class="sw o"></span>[[leg_o]]</li><li><span class="sw r"></span>[[leg_r]]</li><li><span class="sw b"></span>[[leg_b]]</li></ul>
     <p class="map-note">[[map_note]]</p>
-    <ul class="values">
-      <li class="rv"><h3>[[v1_t]]</h3><p>[[v1_p]]</p></li>
-      <li class="rv d2"><h3>[[v2_t]]</h3><p>[[v2_p]]</p></li>
-      <li class="rv d3"><h3>[[v3_t]]</h3><p>[[v3_p]]</p></li>
-      <li class="rv"><h3>[[v4_t]]</h3><p>[[v4_p]]</p></li>
-    </ul>
+    <div class="how">
+      <p class="eb rv">[[v_eb]]</p>
+      <ul class="values">
+        <li class="rv"><h3>[[v3_t]]</h3><p>[[v3_p]]</p></li>
+        <li class="rv d2"><h3>[[v4_t]]</h3><p>[[v4_p]]</p></li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -457,7 +483,7 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
         <div><dt>[[c_email]]</dt><dd><a href="mailto:info@elporvenir.farm">info@elporvenir.farm</a><button class="copy" type="button" data-copy="info@elporvenir.farm">[[c_copy]]</button></dd></div>
         <div><dt>[[c_whatsapp]]</dt><dd><a href="https://wa.me/393450054849" rel="noopener">+39 345 005 4849</a></dd></div>
         <div><dt>[[c_instagram]]</dt><dd><a href="https://www.instagram.com/elporvenirfarm/" rel="noopener">@elporvenirfarm</a></dd></div>
-        <div><dt>[[c_farm]]</dt><dd>Monte Alverne, Santa Cruz do Sul<br>Rio Grande do Sul</dd></div>
+        <div><dt>[[c_farm]]</dt><dd>Monte Alverne, Santa Cruz do Sul<br>Rio Grande do Sul, [[country]]</dd></div>
       </dl>
       <form class="rv d2" id="form" action="[[REL]]api/contact" method="post" novalidate aria-labelledby="form-title" data-i18n="[[I18N]]">
         <h3 id="form-title" class="eb" style="grid-column:1/-1;margin:0">[[f_title]]</h3>
@@ -468,6 +494,7 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
         <label class="fld"><span>[[f_email]]</span><input type="email" name="email" autocomplete="email" required maxlength="200" inputmode="email" aria-describedby="e-email"><span class="err" id="e-email"></span></label>
         <label class="fld full"><span>[[f_topic]]</span>
           <select name="topic">
+            <option value="" selected disabled>[[t_choose]]</option>
             <option value="pecans">[[t_pecans]]</option>
             <option value="honey">[[t_honey]]</option>
             <option value="visit">[[t_visit]]</option>
@@ -557,6 +584,12 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
     onR();addEventListener("resize",onR);if(!still){addEventListener("scroll",onS,{passive:true});onS()}
   })();
 
+  /* highlight the menu item for the section in view */
+  (function(){var links={};document.querySelectorAll(".links a").forEach(function(a){links[a.getAttribute("href").slice(1)]=a});
+    if(!("IntersectionObserver" in window))return;
+    var io3=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){for(var k in links)links[k].removeAttribute("aria-current");var l=links[e.target.id];if(l)l.setAttribute("aria-current","true")}})},{rootMargin:"-45% 0px -50% 0px"});
+    document.querySelectorAll("main section[id]").forEach(function(s){io3.observe(s)})})();
+
   /* language links keep the section you're on */
   document.querySelectorAll(".lang a").forEach(function(a){a.addEventListener("click",function(){
     var secs=document.querySelectorAll("main section[id]"),cur="";
@@ -589,7 +622,7 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
     fetch(form.action,{method:"POST",body:new FormData(form),headers:{"Accept":"application/json"}})
       .then(function(r){return r.json().then(function(j){if(!r.ok||!j.ok)throw 0})})
       .then(function(){form.reset();form.elements.t.value=String(Date.now());note.textContent=T.ok})
-      .catch(function(){note.classList.add("bad");note.textContent=T.fail})
+      .catch(function(){note.classList.add("bad");var parts=T.fail.split("info@elporvenir.farm");note.textContent=parts[0];if(parts.length>1){var a=document.createElement("a");a.href="mailto:info@elporvenir.farm";a.textContent="info@elporvenir.farm";note.appendChild(a);note.appendChild(document.createTextNode(parts[1]))}})
       .then(function(){btn.disabled=false;lbl.textContent=o});
   });
 })();

@@ -325,6 +325,31 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
   footer .fine{align-items:center;text-align:center}
 }
 @media (prefers-reduced-motion:reduce){.now .k::before{animation:none}}
+
+/* v2.1: critique fixes */
+.how{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:32px clamp(32px,6vw,80px);margin:clamp(80px,9vw,120px) 0 0;padding-top:24px;border-top:1px solid var(--line)}
+.how .values{grid-template-columns:repeat(2,minmax(0,1fr));margin:0}
+.how .values li{border-top:0;padding-top:0}
+.legend{margin:clamp(40px,5vw,56px) 0 0;padding:0 0 20px;border-top:0;border-bottom:1px solid var(--line)}
+.maps{margin-top:32px}
+.season .eb{min-height:3.3em}
+.s-nature h2{font-size:clamp(52px,7.6vw,112px);overflow-wrap:break-word;hyphens:auto}
+.now .k::before{animation-iteration-count:4}
+.m-sp{--c:#a3bd7f}.m-su{--c:#5f9e62}.season[data-s=sp] .rule{background:#a3bd7f}.season[data-s=su] .rule{background:#5f9e62}
+.links a{position:relative}
+.links a[aria-current]{color:var(--gold)}
+.links a[aria-current]::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--gold)}
+.note a{color:inherit;text-decoration:underline}
+.fld select:invalid{color:var(--muted)}
+@media (max-width:900px){
+  .how{grid-template-columns:1fr}
+  .season .eb{min-height:0}
+  .maps figure{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  .maps .map{width:auto;height:220px;max-width:none}
+  .maps figcaption{position:sticky;left:0}
+  .hero::after{background:linear-gradient(180deg,rgba(17,21,15,.6) 0%,rgba(17,21,15,.1) 22%,rgba(17,21,15,.45) 42%,rgba(17,21,15,.9) 62%,rgba(17,21,15,.98) 100%)}
+}
+@media (max-width:560px){.how .values{grid-template-columns:1fr}}
 </style>
 <script>document.documentElement.className+=" js"</script>
 </head>
@@ -334,7 +359,7 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
 <header class="nav navin" id="nav">
   <a href="#top" class="brand">El Porvenir</a>
   <nav class="links" aria-label="Principal">
-    <a href="#nature">Nuestra historia</a>
+    <a href="#nature">Naturaleza</a>
     <a href="#future">Nuestros árboles</a>
     <a href="#year">El año del huerto</a>
     <a href="#land">La tierra</a>
@@ -354,7 +379,7 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
   <button class="close" type="button" aria-label="Cerrar menú" id="close">
     <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3l14 14M17 3L3 17" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
   </button>
-  <a href="#nature">Nuestra historia</a>
+  <a href="#nature">Naturaleza</a>
   <a href="#future">Nuestros árboles</a>
   <a href="#year">El año del huerto</a>
   <a href="#land">La tierra</a>
@@ -386,7 +411,7 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
 
 <section class="light s-future" id="future" aria-labelledby="h-future">
   <div class="wrap">
-    <p class="eb rv">II · Por·ve·nir</p>
+    <p class="eb rv">II · Nuestros árboles</p>
     <div class="two">
       <h2 class="d rv" id="h-future">Por·ve·nir: lo que está por venir.</h2>
       <p class="rv d2">Un pecán tarda años en dar fruto y después sigue dando durante generaciones; por eso una finca así se planta para quienes vienen después. En 2026 llegó la primera cosecha.</p>
@@ -439,18 +464,19 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
       <div class="bar" aria-hidden="true"><i></i></div>
       <p class="lab"><span><b>unas 34 hectáreas de huerto de pecán</b></span><span>de unas 71 hectáreas en total</span></p>
     </div>
+    <ul class="legend"><li><span class="sw o"></span>Parcelas de huerto mapeadas</li><li><span class="sw r"></span>El resto de la tierra</li><li><span class="sw b"></span>Límite de la finca</li></ul>
     <div class="maps">
       <figure class="mapfig" data-in><svg class="map" viewBox="10 80 753 160" role="img" aria-label="Mapa simplificado de La Figuera: parcelas de huerto repartidas por la tierra, con bosque entre ellas"><defs><pattern id="fof" width="48" height="48" patternUnits="userSpaceOnUse"><g fill="#3f5a34"><circle cx="6.4" cy="40.7" r="1.39"/><circle cx="12.2" cy="23.8" r="1.10"/><circle cx="31.3" cy="37.9" r="0.78"/><circle cx="1.4" cy="40.1" r="1.09"/><circle cx="36.6" cy="0.1" r="1.10"/><circle cx="34.6" cy="11.0" r="1.55"/><circle cx="43.3" cy="1.5" r="0.72"/><circle cx="26.0" cy="45.1" r="1.04"/><circle cx="10.4" cy="20.3" r="0.73"/><circle cx="10.6" cy="21.0" r="1.15"/><circle cx="11.2" cy="11.1" r="0.90"/><circle cx="22.1" cy="13.9" r="0.72"/><circle cx="40.2" cy="26.7" r="1.28"/><circle cx="8.9" cy="47.6" r="1.47"/><circle cx="5.8" cy="16.0" r="1.35"/><circle cx="34.1" cy="44.9" r="1.08"/><circle cx="39.8" cy="32.2" r="0.97"/><circle cx="28.2" cy="42.4" r="1.46"/><circle cx="24.3" cy="28.3" r="0.73"/><circle cx="11.7" cy="38.3" r="1.07"/><circle cx="8.3" cy="26.3" r="1.33"/><circle cx="32.4" cy="18.0" r="1.10"/><circle cx="24.4" cy="37.4" r="1.17"/><circle cx="18.9" cy="23.5" r="0.73"/><circle cx="2.1" cy="33.8" r="1.58"/><circle cx="28.5" cy="18.9" r="0.85"/><circle cx="24.1" cy="47.1" r="1.39"/><circle cx="25.9" cy="41.3" r="0.91"/><circle cx="24.7" cy="45.7" r="1.22"/><circle cx="22.0" cy="12.9" r="1.19"/><circle cx="45.9" cy="0.3" r="1.41"/><circle cx="39.4" cy="42.5" r="1.37"/><circle cx="38.8" cy="24.9" r="1.21"/><circle cx="20.5" cy="2.7" r="1.48"/></g></pattern><pattern id="orf" width="5.5" height="5.5" patternUnits="userSpaceOnUse" patternTransform="rotate(-9)"><rect width="5.5" height="5.5" fill="#26261a"/><circle cx="2.75" cy="2.75" r="1.45" fill="#c4a46a"/></pattern><clipPath id="cf"><path d="M18.0,88.0 L490.0,88.0 L490.0,126.0 L755.0,126.0 L755.0,170.0 L270.0,188.0 L20.0,232.0Z"/></clipPath></defs><path class="land" d="M18.0,88.0 L490.0,88.0 L490.0,126.0 L755.0,126.0 L755.0,170.0 L270.0,188.0 L20.0,232.0Z" fill="#151b12"/><path d="M18.0,88.0 L490.0,88.0 L490.0,126.0 L755.0,126.0 L755.0,170.0 L270.0,188.0 L20.0,232.0Z" fill="url(#fof)"/><g class="plots" clip-path="url(#cf)" fill="url(#orf)" stroke="#c4a46a" stroke-width="1"><path d="M84.2,163.0 C84.0,165.3 82.6,167.1 80.5,169.3 C78.3,171.4 75.4,173.4 72.3,175.0 C69.3,176.6 67.1,177.7 63.5,178.2 C60.0,178.8 56.3,178.8 52.5,178.3 C48.8,177.7 46.2,176.9 43.0,175.3 C39.8,173.7 36.5,171.6 34.6,169.4 C32.8,167.2 32.5,165.3 32.8,163.0 C33.2,160.7 35.0,158.5 36.6,156.4 C38.2,154.4 38.8,153.2 41.7,151.7 C44.5,150.2 48.2,148.5 52.2,147.9 C56.2,147.4 60.2,148.3 63.9,148.8 C67.5,149.3 69.4,149.3 72.6,150.7 C75.8,152.1 79.5,154.3 81.6,156.5 C83.7,158.8 84.4,160.7 84.2,163.0Z" style="--i:0"/><path d="M108.0,128.0 C108.3,131.1 108.5,133.3 106.3,136.1 C104.1,138.8 100.5,141.2 95.9,143.3 C91.4,145.4 86.5,146.8 81.2,147.5 C76.0,148.2 71.7,148.2 66.8,147.3 C61.8,146.4 58.0,144.4 53.7,142.6 C49.4,140.8 45.1,139.8 42.8,137.1 C40.6,134.5 41.3,131.3 41.1,128.0 C40.9,124.7 39.9,121.5 41.8,118.7 C43.8,115.9 47.6,114.2 51.9,112.6 C56.2,111.0 60.2,110.5 65.6,109.9 C71.1,109.3 77.0,108.5 82.2,109.2 C87.4,109.8 90.6,111.6 94.6,113.3 C98.6,115.1 102.1,116.2 104.6,118.9 C107.0,121.5 107.7,124.9 108.0,128.0Z" style="--i:1"/><path d="M20.0,90.0 C25.0,87.0 37.9,89.7 48.0,89.6 C58.1,89.5 65.9,89.3 76.0,89.2 C86.1,89.1 93.9,88.9 104.0,88.8 C114.1,88.7 121.9,88.5 132.0,88.4 C142.1,88.3 155.9,84.1 160.0,88.0 C164.1,91.9 157.2,101.5 155.0,110.0 C152.8,118.5 150.2,126.0 147.5,135.0 C144.8,144.0 144.1,157.3 140.0,160.0 C135.9,162.7 129.0,155.8 125.0,150.0 C121.0,144.2 125.1,133.3 118.0,128.0 C110.9,122.7 97.1,123.3 85.3,120.7 C73.6,118.0 64.4,116.0 52.7,113.3 C40.9,110.7 25.9,110.2 20.0,106.0 C14.1,101.8 15.0,93.0 20.0,90.0Z" style="--i:2"/><path d="M259.0,145.0 C259.9,149.6 261.8,153.6 258.8,157.9 C255.8,162.3 249.1,165.7 242.4,169.0 C235.7,172.4 229.6,175.9 221.9,176.6 C214.1,177.3 207.5,174.3 199.2,172.9 C190.9,171.6 182.7,171.8 175.8,169.0 C169.0,166.2 164.3,161.7 161.2,157.4 C158.1,153.1 157.7,149.8 158.5,145.0 C159.2,140.2 162.1,134.6 165.2,130.6 C168.3,126.6 169.4,125.5 175.5,122.6 C181.6,119.7 190.9,115.9 199.3,114.6 C207.7,113.3 214.9,114.2 222.4,115.4 C229.9,116.5 235.4,118.0 241.0,121.1 C246.5,124.1 250.1,127.8 253.3,132.1 C256.6,136.5 258.0,140.4 259.0,145.0Z" style="--i:3"/><path d="M198.0,90.0 C205.2,85.9 230.8,85.9 238.0,90.0 C245.2,94.1 245.2,108.9 238.0,113.0 C230.8,117.1 205.2,117.1 198.0,113.0 C190.8,108.9 190.8,94.1 198.0,90.0Z" style="--i:4"/><path d="M238.0,90.0 C243.8,84.8 262.6,85.2 268.0,92.0 C273.4,98.8 273.8,122.8 268.0,128.0 C262.2,133.2 241.4,127.8 236.0,121.0 C230.6,114.2 232.2,95.2 238.0,90.0Z" style="--i:5"/><path d="M306.4,136.0 C306.2,138.8 306.1,141.6 305.2,143.9 C304.4,146.3 303.4,147.2 301.5,149.1 C299.7,151.0 297.4,153.8 295.1,154.5 C292.8,155.2 291.2,153.6 288.8,152.8 C286.4,152.0 283.9,151.6 281.9,150.0 C279.9,148.4 278.7,146.3 277.8,143.8 C276.8,141.3 276.6,138.9 276.7,136.0 C276.7,133.1 277.1,130.4 278.2,127.7 C279.3,125.1 280.7,122.8 282.6,121.4 C284.5,119.9 286.3,120.2 288.6,119.7 C290.9,119.1 293.2,117.6 295.5,118.2 C297.7,118.8 299.1,121.2 301.1,123.0 C303.0,124.8 305.3,125.9 306.3,128.2 C307.3,130.6 306.6,133.2 306.4,136.0Z" style="--i:6"/><path d="M443.6,148.0 C443.4,151.5 443.5,154.2 441.2,157.4 C439.0,160.6 435.0,163.2 431.1,165.7 C427.3,168.2 424.7,170.8 419.8,171.5 C415.0,172.2 409.5,170.5 404.3,169.4 C399.2,168.3 395.0,167.5 391.3,165.3 C387.6,163.2 385.8,160.5 383.8,157.4 C381.9,154.2 381.1,151.6 380.5,148.0 C379.9,144.4 378.9,140.6 380.7,137.5 C382.5,134.5 386.1,133.1 390.4,130.9 C394.8,128.7 399.6,126.3 404.9,125.1 C410.1,123.9 414.4,123.2 419.6,124.3 C424.8,125.4 429.8,128.8 433.8,131.2 C437.9,133.6 440.5,134.7 442.2,137.7 C444.0,140.8 443.8,144.5 443.6,148.0Z" style="--i:7"/></g><path class="edge" d="M18.0,88.0 L490.0,88.0 L490.0,126.0 L755.0,126.0 L755.0,170.0 L270.0,188.0 L20.0,232.0Z" pathLength="1" fill="none" stroke="#e9e9e4" stroke-opacity=".6" stroke-width=".9"/></svg><figcaption><strong>La Figuera</strong><span>unas 10 hectáreas de pecanes</span></figcaption></figure>
       <figure class="mapfig" data-in><svg class="map" viewBox="2 58 734 183" role="img" aria-label="Mapa simplificado de La Noguera: parcelas de huerto repartidas por la tierra, con bosque entre ellas"><defs><pattern id="fon" width="48" height="48" patternUnits="userSpaceOnUse"><g fill="#3f5a34"><circle cx="6.4" cy="40.7" r="1.39"/><circle cx="12.2" cy="23.8" r="1.10"/><circle cx="31.3" cy="37.9" r="0.78"/><circle cx="1.4" cy="40.1" r="1.09"/><circle cx="36.6" cy="0.1" r="1.10"/><circle cx="34.6" cy="11.0" r="1.55"/><circle cx="43.3" cy="1.5" r="0.72"/><circle cx="26.0" cy="45.1" r="1.04"/><circle cx="10.4" cy="20.3" r="0.73"/><circle cx="10.6" cy="21.0" r="1.15"/><circle cx="11.2" cy="11.1" r="0.90"/><circle cx="22.1" cy="13.9" r="0.72"/><circle cx="40.2" cy="26.7" r="1.28"/><circle cx="8.9" cy="47.6" r="1.47"/><circle cx="5.8" cy="16.0" r="1.35"/><circle cx="34.1" cy="44.9" r="1.08"/><circle cx="39.8" cy="32.2" r="0.97"/><circle cx="28.2" cy="42.4" r="1.46"/><circle cx="24.3" cy="28.3" r="0.73"/><circle cx="11.7" cy="38.3" r="1.07"/><circle cx="8.3" cy="26.3" r="1.33"/><circle cx="32.4" cy="18.0" r="1.10"/><circle cx="24.4" cy="37.4" r="1.17"/><circle cx="18.9" cy="23.5" r="0.73"/><circle cx="2.1" cy="33.8" r="1.58"/><circle cx="28.5" cy="18.9" r="0.85"/><circle cx="24.1" cy="47.1" r="1.39"/><circle cx="25.9" cy="41.3" r="0.91"/><circle cx="24.7" cy="45.7" r="1.22"/><circle cx="22.0" cy="12.9" r="1.19"/><circle cx="45.9" cy="0.3" r="1.41"/><circle cx="39.4" cy="42.5" r="1.37"/><circle cx="38.8" cy="24.9" r="1.21"/><circle cx="20.5" cy="2.7" r="1.48"/></g></pattern><pattern id="orn" width="5.5" height="5.5" patternUnits="userSpaceOnUse" patternTransform="rotate(-9)"><rect width="5.5" height="5.5" fill="#26261a"/><circle cx="2.75" cy="2.75" r="1.45" fill="#c4a46a"/></pattern><clipPath id="cn"><path d="M248.0,78.0 L728.0,66.0 L728.0,116.0 L622.0,118.0 L622.0,215.0 L445.0,224.0 L125.0,233.0 L125.0,180.0 L10.0,176.0 L10.0,133.0 L248.0,127.0Z"/></clipPath></defs><path class="land" d="M248.0,78.0 L728.0,66.0 L728.0,116.0 L622.0,118.0 L622.0,215.0 L445.0,224.0 L125.0,233.0 L125.0,180.0 L10.0,176.0 L10.0,133.0 L248.0,127.0Z" fill="#151b12"/><path d="M248.0,78.0 L728.0,66.0 L728.0,116.0 L622.0,118.0 L622.0,215.0 L445.0,224.0 L125.0,233.0 L125.0,180.0 L10.0,176.0 L10.0,133.0 L248.0,127.0Z" fill="url(#fon)"/><g class="plots" clip-path="url(#cn)" fill="url(#orn)" stroke="#c4a46a" stroke-width="1"><path d="M15.0,135.0 C19.3,129.2 32.4,134.4 42.1,134.0 C51.9,133.6 59.5,133.4 69.3,133.0 C79.1,132.6 86.7,132.4 96.4,132.0 C106.2,131.6 113.8,131.4 123.6,131.0 C133.3,130.6 140.9,130.4 150.7,130.0 C160.5,129.6 168.1,129.4 177.9,129.0 C187.6,128.6 204.3,121.5 205.0,128.0 C205.7,134.5 191.6,157.8 182.0,165.0 C172.4,172.2 162.5,167.1 151.5,168.2 C140.5,169.4 132.0,170.3 121.0,171.5 C110.0,172.7 101.5,173.6 90.5,174.8 C79.5,175.9 73.0,179.6 60.0,178.0 C47.0,176.4 26.1,173.7 18.0,166.0 C9.9,158.3 10.7,140.8 15.0,135.0Z" style="--i:0"/><path d="M125.0,182.0 C128.8,173.6 141.8,181.6 151.2,181.4 C160.7,181.2 168.1,181.0 177.5,180.8 C186.9,180.6 194.3,180.5 203.8,180.2 C213.2,180.0 220.6,179.9 230.0,179.7 C239.4,179.5 246.8,179.3 256.2,179.1 C265.7,178.9 273.1,178.7 282.5,178.5 C291.9,178.3 299.3,178.1 308.8,177.9 C318.2,177.7 325.6,177.5 335.0,177.3 C344.4,177.1 351.8,177.0 361.2,176.8 C370.7,176.5 378.1,176.4 387.5,176.2 C396.9,176.0 404.3,175.8 413.8,175.6 C423.2,175.4 433.1,171.5 440.0,175.0 C446.9,178.5 453.4,188.0 452.0,195.0 C450.6,202.0 440.5,210.4 432.0,214.0 C423.5,217.6 414.4,214.8 404.5,215.3 C394.7,215.7 387.0,216.1 377.1,216.5 C367.2,217.0 359.5,217.4 349.6,217.8 C339.8,218.3 332.1,218.6 322.2,219.1 C312.3,219.5 304.6,219.9 294.7,220.4 C284.8,220.8 277.2,221.2 267.3,221.6 C257.4,222.1 249.7,222.5 239.8,222.9 C229.9,223.4 222.2,223.7 212.4,224.2 C202.5,224.6 194.8,225.0 184.9,225.5 C175.0,225.9 167.3,226.3 157.5,226.7 C147.6,227.2 135.8,236.1 130.0,228.0 C124.2,219.9 121.2,190.4 125.0,182.0Z" style="--i:1"/><path d="M308.0,150.0 C312.9,145.5 330.1,145.5 335.0,150.0 C339.9,154.5 339.9,170.5 335.0,175.0 C330.1,179.5 312.9,179.5 308.0,175.0 C303.1,170.5 303.1,154.5 308.0,150.0Z" style="--i:2"/><path d="M315.0,81.0 C320.4,74.5 343.3,72.9 350.0,79.0 C356.7,85.1 357.4,108.5 352.0,115.0 C346.6,121.5 326.7,121.1 320.0,115.0 C313.3,108.9 309.6,87.5 315.0,81.0Z" style="--i:3"/><path d="M340.0,122.0 C343.9,115.9 357.1,122.0 366.7,122.0 C376.3,122.0 383.7,122.0 393.3,122.0 C402.9,122.0 410.4,122.0 420.0,122.0 C429.6,122.0 437.1,122.0 446.7,122.0 C456.3,122.0 463.7,122.0 473.3,122.0 C482.9,122.0 497.0,115.2 500.0,122.0 C503.0,128.8 500.8,152.1 490.0,160.0 C479.2,167.9 454.7,165.5 440.0,166.0 C425.3,166.5 419.7,163.9 408.3,162.7 C396.9,161.5 388.1,160.5 376.7,159.3 C365.3,158.1 351.6,162.7 345.0,156.0 C338.4,149.3 336.1,128.1 340.0,122.0Z" style="--i:4"/><path d="M352.0,76.0 C356.8,68.3 369.2,75.6 378.9,75.4 C388.5,75.2 396.0,75.1 405.7,74.9 C415.4,74.7 422.9,74.5 432.6,74.3 C442.2,74.1 449.8,73.9 459.4,73.7 C469.1,73.5 476.6,73.3 486.3,73.1 C496.0,72.9 503.5,72.8 513.1,72.6 C522.8,72.4 529.8,68.0 540.0,72.0 C550.2,76.0 566.4,86.7 570.0,95.0 C573.6,103.3 566.5,113.9 560.0,118.0 C553.5,122.1 543.4,118.0 534.0,118.0 C524.6,118.0 517.4,118.0 508.0,118.0 C498.6,118.0 491.4,118.0 482.0,118.0 C472.6,118.0 465.4,118.0 456.0,118.0 C446.6,118.0 439.4,118.0 430.0,118.0 C420.6,118.0 413.4,118.0 404.0,118.0 C394.6,118.0 387.4,118.0 378.0,118.0 C368.6,118.0 356.7,125.6 352.0,118.0 C347.3,110.4 347.2,83.7 352.0,76.0Z" style="--i:5"/><path d="M445.0,216.0 C448.2,213.3 461.0,210.2 470.0,207.0 C479.0,203.8 486.0,201.2 495.0,198.0 C504.0,194.8 511.0,192.2 520.0,189.0 C529.0,185.8 534.2,175.5 545.0,180.0 C555.8,184.5 579.5,207.5 580.0,214.0 C580.5,220.5 559.5,215.3 548.0,216.0 C536.5,216.7 527.5,217.3 516.0,218.0 C504.5,218.7 495.5,219.3 484.0,220.0 C472.5,220.7 459.0,222.7 452.0,222.0 C445.0,221.3 441.8,218.7 445.0,216.0Z" style="--i:6"/><path d="M540.0,118.0 C548.3,110.8 563.0,118.0 576.0,118.0 C589.0,118.0 606.2,110.4 612.0,118.0 C617.8,125.6 613.4,152.6 608.0,160.0 C602.6,167.4 591.4,159.6 582.0,159.3 C572.6,159.1 565.4,158.9 556.0,158.7 C546.6,158.4 532.9,165.3 530.0,158.0 C527.1,150.7 531.7,125.2 540.0,118.0Z" style="--i:7"/><path d="M575.0,72.0 C579.9,64.4 599.6,62.8 605.0,70.0 C610.4,77.2 609.9,104.4 605.0,112.0 C600.1,119.6 583.4,119.2 578.0,112.0 C572.6,104.8 570.1,79.6 575.0,72.0Z" style="--i:8"/><path d="M585.0,168.0 C589.0,159.0 615.0,156.7 622.0,165.0 C629.0,173.3 628.0,205.0 624.0,214.0 C620.0,223.0 607.0,223.3 600.0,215.0 C593.0,206.7 581.0,177.0 585.0,168.0Z" style="--i:9"/><path d="M615.0,69.0 C619.0,60.5 632.6,68.7 642.5,68.5 C652.4,68.3 660.1,68.2 670.0,68.0 C679.9,67.8 687.6,67.7 697.5,67.5 C707.4,67.3 719.9,58.6 725.0,67.0 C730.1,75.4 730.6,105.5 726.0,114.0 C721.4,122.5 709.0,114.3 699.5,114.5 C690.0,114.7 682.5,114.8 673.0,115.0 C663.5,115.2 656.0,115.3 646.5,115.5 C637.0,115.7 625.7,124.4 620.0,116.0 C614.3,107.6 611.0,77.5 615.0,69.0Z" style="--i:10"/></g><path class="edge" d="M248.0,78.0 L728.0,66.0 L728.0,116.0 L622.0,118.0 L622.0,215.0 L445.0,224.0 L125.0,233.0 L125.0,180.0 L10.0,176.0 L10.0,133.0 L248.0,127.0Z" pathLength="1" fill="none" stroke="#e9e9e4" stroke-opacity=".6" stroke-width=".9"/></svg><figcaption><strong>La Noguera</strong><span>unas 24 hectáreas de pecanes</span></figcaption></figure>
     </div>
-    <ul class="legend"><li><span class="sw o"></span>Parcelas de huerto mapeadas</li><li><span class="sw r"></span>El resto de la tierra</li><li><span class="sw b"></span>Límite de la finca</li></ul>
     <p class="map-note">Simplificado a partir de los mapas de parcelas de la finca. No todas las parcelas están plantadas hoy.</p>
-    <ul class="values">
-      <li class="rv"><h3>Plantado a largo plazo.</h3><p>Árboles elegidos para dar fruto durante generaciones.</p></li>
-      <li class="rv d2"><h3>El bosque se queda.</h3><p>No se desmontó bosque para hacer lugar a los huertos.</p></li>
-      <li class="rv d3"><h3>Nuestras propias abejas.</h3><p>Unos 500 kg de miel al año, de nuestras propias colmenas.</p></li>
-      <li class="rv"><h3>Agua planificada con cuidado.</h3><p>Se están evaluando dos pozos para riego.</p></li>
-    </ul>
+    <div class="how">
+      <p class="eb rv">Cómo trabajamos</p>
+      <ul class="values">
+        <li class="rv"><h3>Nuestras propias abejas.</h3><p>La finca tiene colmenas y produce su propia miel.</p></li>
+        <li class="rv d2"><h3>Agua planificada con cuidado.</h3><p>Se están evaluando dos pozos para riego.</p></li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -458,13 +484,13 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
   <div class="wrap">
     <p class="eb rv">V · Contacto</p>
     <h2 class="d rv d2" id="h-contact">Escríbenos.</h2>
-    <p class="body rv d3">Por nueces pecán, miel, prensa o colaboraciones, envíanos un mensaje.</p>
+    <p class="body rv d3">Por nueces pecán, miel, prensa o colaboraciones, envíanos un mensaje. Respondemos en español, inglés, italiano, portugués y alemán.</p>
     <div class="contact-grid">
       <dl class="cl rv">
         <div><dt>Correo</dt><dd><a href="mailto:info@elporvenir.farm">info@elporvenir.farm</a><button class="copy" type="button" data-copy="info@elporvenir.farm">Copiar</button></dd></div>
         <div><dt>WhatsApp</dt><dd><a href="https://wa.me/393450054849" rel="noopener">+39 345 005 4849</a></dd></div>
         <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/elporvenirfarm/" rel="noopener">@elporvenirfarm</a></dd></div>
-        <div><dt>La finca</dt><dd>Monte Alverne, Santa Cruz do Sul<br>Rio Grande do Sul</dd></div>
+        <div><dt>La finca</dt><dd>Monte Alverne, Santa Cruz do Sul<br>Rio Grande do Sul, Brasil</dd></div>
       </dl>
       <form class="rv d2" id="form" action="../api/contact" method="post" novalidate aria-labelledby="form-title" data-i18n="{&quot;e_req&quot;: &quot;Completa este campo.&quot;, &quot;e_mail&quot;: &quot;Agrega tu correo para que podamos responderte.&quot;, &quot;ok&quot;: &quot;Gracias. Tu mensaje nos llegó.&quot;, &quot;fail&quot;: &quot;Tu mensaje no se envió. Revisa tu conexión e inténtalo de nuevo, o escribe a info@elporvenir.farm.&quot;, &quot;f_sending&quot;: &quot;Enviando…&quot;, &quot;c_copied&quot;: &quot;Copiado&quot;}">
         <h3 id="form-title" class="eb" style="grid-column:1/-1;margin:0">Envíanos un mensaje</h3>
@@ -475,6 +501,7 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
         <label class="fld"><span>Correo electrónico</span><input type="email" name="email" autocomplete="email" required maxlength="200" inputmode="email" aria-describedby="e-email"><span class="err" id="e-email"></span></label>
         <label class="fld full"><span>Tema</span>
           <select name="topic">
+            <option value="" selected disabled>Elige un tema</option>
             <option value="pecans">Comprar nueces pecán</option>
             <option value="honey">Comprar miel</option>
             <option value="visit">Visitar la finca</option>
@@ -564,6 +591,12 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
     onR();addEventListener("resize",onR);if(!still){addEventListener("scroll",onS,{passive:true});onS()}
   })();
 
+  /* highlight the menu item for the section in view */
+  (function(){var links={};document.querySelectorAll(".links a").forEach(function(a){links[a.getAttribute("href").slice(1)]=a});
+    if(!("IntersectionObserver" in window))return;
+    var io3=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){for(var k in links)links[k].removeAttribute("aria-current");var l=links[e.target.id];if(l)l.setAttribute("aria-current","true")}})},{rootMargin:"-45% 0px -50% 0px"});
+    document.querySelectorAll("main section[id]").forEach(function(s){io3.observe(s)})})();
+
   /* language links keep the section you're on */
   document.querySelectorAll(".lang a").forEach(function(a){a.addEventListener("click",function(){
     var secs=document.querySelectorAll("main section[id]"),cur="";
@@ -596,7 +629,7 @@ footer .fine{margin:0;padding:0;border:0;flex-direction:column;align-items:flex-
     fetch(form.action,{method:"POST",body:new FormData(form),headers:{"Accept":"application/json"}})
       .then(function(r){return r.json().then(function(j){if(!r.ok||!j.ok)throw 0})})
       .then(function(){form.reset();form.elements.t.value=String(Date.now());note.textContent=T.ok})
-      .catch(function(){note.classList.add("bad");note.textContent=T.fail})
+      .catch(function(){note.classList.add("bad");var parts=T.fail.split("info@elporvenir.farm");note.textContent=parts[0];if(parts.length>1){var a=document.createElement("a");a.href="mailto:info@elporvenir.farm";a.textContent="info@elporvenir.farm";note.appendChild(a);note.appendChild(document.createTextNode(parts[1]))}})
       .then(function(){btn.disabled=false;lbl.textContent=o});
   });
 })();
