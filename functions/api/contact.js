@@ -16,17 +16,26 @@ const TOPICS = {
 };
 const LANGS = { en: "/", pt: "/pt/", es: "/es/" };
 
+// The site lives on www.elporvenir.farm (GitHub Pages) and posts the form here.
+const ALLOWED = ["https://www.elporvenir.farm", "https://elporvenir.farm", "https://elporvenir.francesco-swoboda.workers.dev"];
+function siteOrigin(request) {
+  const o = request.headers.get("Origin") || "";
+  if (ALLOWED.includes(o)) return o;
+  const r = request.headers.get("Referer") || "";
+  return ALLOWED.find((a) => r.startsWith(a + "/")) || null;
+}
+
 function reply(request, ok, status, lang) {
   const wantsJson = (request.headers.get("Accept") || "").includes("application/json");
+  const origin = siteOrigin(request);
   if (wantsJson) {
-    return new Response(JSON.stringify({ ok }), {
-      status,
-      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
-    });
+    const headers = { "Content-Type": "application/json", "Cache-Control": "no-store", Vary: "Origin" };
+    if (origin) headers["Access-Control-Allow-Origin"] = origin;
+    return new Response(JSON.stringify({ ok }), { status, headers });
   }
   // Without JavaScript the browser posts the form directly: send people back to the page.
   const base = LANGS[lang] || "/";
-  return Response.redirect(new URL(`${base}${ok ? "sent" : "not-sent"}/`, request.url).toString(), 303);
+  return Response.redirect(new URL(`${base}${ok ? "sent" : "not-sent"}/`, origin || request.url).toString(), 303);
 }
 
 const clean = (v, max) => String(v || "").replace(/\r/g, "").trim().slice(0, max);
