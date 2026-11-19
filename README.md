@@ -1,39 +1,54 @@
-# El Porvenir Farm — showcase website
+# elporvenir.farm
 
-A single-page showcase site for El Porvenir Farm, a pecan orchard in Rio Grande do Sul, Brazil.
+The El Porvenir website: a static site with one small serverless function for the contact form, built for Cloudflare.
 
-## Files
+## What's here
 
-- `index.html` — the finished site, one self-contained file (open it in a browser). This is what gets published.
-- `src/` — the source you edit:
-  - `index.template.html` — page structure
-  - `style.css` — design (type scale, colours, layout)
-  - `i18n.js` — all text, in English, Portuguese and Spanish (`«TBD»` / `«VERIFY»` placeholders show only with `?draft` in the address)
-  - `tree.js` — the living pecan tree (canvas)
-  - `map.js` — the animated map
-  - `main.js` — scroll, seasons, navigation, gallery and everything that ties it together
-- `assets/` — the photos and logo that get embedded into `index.html`
-- `build.py` — bundles `src/` and `assets/` into `index.html`
-- `DECISIONES.md` — design decisions (in Spanish)
-- `type-study.html` — the typography study
+| Path | What it is |
+| --- | --- |
+| `src/strings.py` | All the text in English, Portuguese and Spanish. Edit words here. |
+| `src/template.html` | The page layout, styles and script. |
+| `src/build.py` | Builds the pages into `public/`. Run `python3 src/build.py` after any edit. |
+| `public/` | The finished site that Cloudflare serves: `/`, `/pt/`, `/es/`, images, fonts, `sitemap.xml`, `robots.txt`, `_headers`. |
+| `functions/api/contact.js` | Receives the contact form at `/api/contact` and emails it to info@elporvenir.farm. |
+| `worker.js`, `wrangler.jsonc` | The Cloudflare Worker that serves the site and runs the form. |
+| `.claude/skills/` | Design skills for Claude Code (Impeccable, site-critic and others). |
 
-## Editing
+Images come in AVIF, WebP and JPEG at three widths, so each phone or screen downloads only the size it needs. Fonts (Inter and Inter Display) are hosted on the site itself, with no Google Fonts request. Anyone whose device is set to "reduce motion" gets the site with no animations.
 
-1. Change files in `src/`.
-2. Rebuild: `python3 build.py` (needs Python 3 and Pillow: `pip install pillow`).
-3. Open `index.html` in a browser to check.
+## Run it on your computer
 
-Tip: in VS Code, the "Live Server" extension shows `index.html` and reloads it on save.
+Needs Node.js. In VS Code open a terminal (Terminal → New Terminal) and run:
 
-## Design skills for Claude Code
+```
+npm run dev
+```
 
-`.claude/skills/` contains two open-source design skill packs, so Claude Code in VS Code uses them when working on this site:
+Then open the address it prints (usually http://localhost:8787). After editing text in `src/strings.py`, run `python src/build.py` to rebuild `public/`.
 
-- **Impeccable** by Paul Bakaus (`impeccable`), Apache 2.0, from github.com/pbakaus/impeccable. Type `/impeccable` followed by a command, for example `/impeccable critique`, `/impeccable audit`, `/impeccable polish`, `/impeccable typeset` or `/impeccable animate`.
-- **Emil Kowalski's design engineering skills** (`emil-design-eng`, `animate`, `review-animations`, `improve-animations` and others), MIT, from github.com/emilkowalski/skill. Ask for example "review the animations with review-animations" or use `/emil-design-eng`.
+## Put it online (Cloudflare Workers)
 
-Impeccable's automatic hooks (which download and run its checker after every edit) are deliberately not enabled. Its scripts only run if you ask Claude to use them.
+This uses the same Cloudflare Worker, `elporvenir`, as before.
 
-### Site critic
+1. `npx wrangler login` once, to sign in to Cloudflare in the browser.
+2. `npm run deploy`
+3. In Cloudflare → Workers & Pages → elporvenir → Settings → Domains & Routes, add `www.elporvenir.farm` and `elporvenir.farm` if they aren't there yet.
 
-`.claude/skills/site-critic` is a project-specific, deliberately harsh reviewer. In Claude Code type `/site-critic` (or "critique the site"). It checks the site against the original brief (`brief.md`) and 11 areas (typography, contrast, motion, copy in three languages, accessibility, mobile, performance, code) and returns a ranked table of flaws with file locations and fixes. It doesn't change anything until you say which items to fix.
+## Make the contact form send email
+
+The form uses [Resend](https://resend.com), which is free up to 3,000 emails a month.
+
+1. Create a Resend account and add the domain `elporvenir.farm` under **Domains**. Add the DNS records it shows (one click if the domain is on Cloudflare).
+2. Create an API key in Resend.
+3. Run `npx wrangler secret put RESEND_API_KEY` and paste the key. Optional variables: `MAIL_TO` (default info@elporvenir.farm) and `MAIL_FROM` (default `El Porvenir website <website@elporvenir.farm>`).
+4. Send a test message from the live site.
+
+Every message arrives with **Reply-To** set to the visitor's address. Spam protection: a hidden field bots fill in, and forms sent within 3 seconds of loading are rejected. Without JavaScript the form still works and shows a "sent" or "not sent" page in the visitor's language.
+
+## Before launch
+
+- [ ] A native speaker checks the Portuguese and Spanish (see the "Copy" tab of the project brief)
+- [ ] The family approves the quote line
+- [ ] Swap the placeholder photos for the seasonal shoot (see the "Shot list" tab); the house photo is small and soft at large sizes
+- [ ] Redrawn landscape concept drawings, if they're to be shown
+- [ ] Add a "Domain" property for elporvenir.farm in Search Console and submit `https://www.elporvenir.farm/sitemap.xml`

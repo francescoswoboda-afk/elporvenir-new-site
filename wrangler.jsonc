@@ -1,11 +1,14 @@
-// Cloudflare Workers config: serves the static site in public/ and nothing else.
-// public/ is filled by `npm run deploy` (scripts/stage.js) with the built index.html and icons;
-// src/, assets/ and the docs are never uploaded.
+// Cloudflare Workers config: serves public/ and runs worker.js for the contact form.
+// Secrets (not in this file): RESEND_API_KEY. Set it with `npx wrangler secret put RESEND_API_KEY`
+// or in the Cloudflare dashboard → Workers → elporvenir → Settings → Variables and secrets.
 {
   "name": "elporvenir",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-01",
   "preview_urls": false,
-  "compatibility_date": "2026-10-01",
   "assets": {
-    "directory": "./public"
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
   }
 }
